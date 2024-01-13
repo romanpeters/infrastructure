@@ -13,7 +13,7 @@ pipeline {
             steps {
                 ansiblePlaybook(
                     playbook: 'main.yml',
-                    inventory: 'inventory.ini',
+                    inventory: 'inventory.ini')
             }
         }
     }
