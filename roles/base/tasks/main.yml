@@ -6,6 +6,8 @@
   ansible.builtin.include_tasks: user.yml
 - name: Include ssh tasks
   ansible.builtin.include_tasks: ssh.yml
+- name: Include security tasks
+  ansible.builtin.include_tasks: security.yml
 - name: Include hosts tasks
   ansible.builtin.include_tasks: hosts.yml
 - name: Include zshell tasks
