@@ -1,13 +1,6 @@
 pipeline {
     agent any
 
-    parameters {
-        string(name: 'INSTANCE',
-            description: 'Specify the instance variable')
-        string(name: 'TAGS',
-            description: 'Options: base, docker, production')
-    }
-
     stages {
         stage('Checkout') {
             steps {
@@ -21,10 +14,6 @@ pipeline {
                 ansiblePlaybook(
                     playbook: 'main.yml',
                     inventory: 'inventory.ini',
-                    tags: params.TAGS,
-                    extraVars: [
-                        instance: params.INSTANCE
-                    ])
             }
         }
     }
