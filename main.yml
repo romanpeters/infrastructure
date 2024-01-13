@@ -1,87 +1,21 @@
 ---
-- name: Configure Test server
-  hosts: nuc
+- name: Configure Base
+  hosts: default
+  strategy: free
   become: true
   roles:
     - name: base
+
+- name: Configure Docker
+  hosts: docker
+  strategy: free
+  become: true
+  roles:
     - name: docker
-
-- name: Configure Jenkins
-  hosts: jenkins
-  become: true
-  roles:
-    - name: base
-
-- name: Configure Octopi
-  hosts: octopi
-  become: true
-  roles:
-    - name: base
 
 - name: Configure Production
-  hosts: production
+  hosts: prouction
   become: true
   roles:
-    - name: base
-    - name: docker
     - name: production
-
-- name: Configure Networker
-  hosts: networker
-  become: true
-  roles:
-    - name: base
-    - name: docker
-
-- name: Configure Webserver
-  hosts: webserver
-  become: true
-  roles:
-    - name: base
-    - name: docker
-
-- name: Configure Plex
-  hosts: plex
-  become: true
-  roles:
-    - name: base
-
-- name: Configure RTV Web
-  hosts: romantv
-  become: true
-  roles:
-    - name: base
-    - name: docker
-
-- name: Configure Vaultwarden
-  hosts: vaultwarden
-  become: true
-  roles:
-    - name: base
-    - name: docker
-
-- name: Configure GPU
-  hosts: gpu
-  become: true
-  roles:
-    - name: base
-    - name: docker
-
-- name: Configure Kubernetes server
-  hosts: pbs
-  become: true
-  roles:
-    - name: base
-
-- name: Configure Proxmox
-  hosts: proxmox
-  become: true
-  roles:
-    - name: base
-
-- name: Configure Proxmox Backup Server
-  hosts: pbs
-  become: true
-  roles:
-    - name: base
 
