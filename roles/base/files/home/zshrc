@@ -6,8 +6,8 @@ source $ZSH/oh-my-zsh.sh
 source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 alias ls="exa"
-alias cat="bat"
-alias grep="ripgrep"
+alias cat="batcat"
+alias grep="rg"
 
 echo
 neofetch
