@@ -1,6 +1,11 @@
 pipeline {
     agent any
 
+    parameters {
+         string(name: 'LIMIT',
+             description: 'Limit to specific hosts or groups')
+    }
+
     stages {
         stage('Clean Workspace') {
             steps {
@@ -30,7 +35,8 @@ pipeline {
             steps {
                 ansiblePlaybook(
                     playbook: 'main.yml',
-                    inventory: 'inventory.ini')
+                    inventory: 'inventory.ini',
+                    limit: params.LIMIT)
             }
         }
     }
