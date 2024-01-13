@@ -9,7 +9,6 @@ alias ls="exa"
 alias cat="bat"
 alias df="duf"
 alias grep="ripgrep"
-alias ps="procs"
 
 echo
 neofetch

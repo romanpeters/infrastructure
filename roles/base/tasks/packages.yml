@@ -16,7 +16,6 @@
       - bat
       - duf
       - ripgrep
-      - procs
       - tldr
       - btop
       - trash-cli
