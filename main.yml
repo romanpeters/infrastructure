@@ -50,38 +50,38 @@
 - name: Configure Test server
   hosts: nuc
   become: true
-  rolse:
+  roles:
     - name: base
     - name: docker
 
 - name: Configure GPU
   hosts: gpu
   become: true
-  rolse:
+  roles:
     - name: base
     - name: docker
 
 - name: Configure Kubernetes server
   hosts: pbs
   become: true
-  rolse:
+  roles:
     - name: base
 
 - name: Configure Octopi
   hosts: octopi
   become: true
-  rolse:
+  roles:
     - name: base
 
 - name: Configure Proxmox
   hosts: proxmox
   become: true
-  rolse:
+  roles:
     - name: base
 
 - name: Configure Proxmox Backup Server
   hosts: pbs
   become: true
-  rolse:
+  roles:
     - name: base
 
