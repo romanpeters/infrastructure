@@ -1,3 +1,4 @@
+import os
 import re
 
 ANSIBLE_INVENTORY_PATH = "inventory.ini"
@@ -14,6 +15,10 @@ def generate_hosts_file(inventory_path, output_path):
         host_name = match.group(1)
         host_address = match.group(2)
         hosts.append(f"{host_address}\t{host_name}")
+
+    directory_path = os.path.dirname(output_path)
+    if not os.path.exists(directory_path):
+        os.makedirs(directory_path)
 
     with open(output_path, 'w') as output_file:
         output_file.write('\n'.join(hosts))

@@ -1,3 +1,4 @@
+import os
 import re
 
 ANSIBLE_INVENTORY_PATH = "inventory.ini"
@@ -15,6 +16,10 @@ def generate_ssh_config(inventory_path, output_path):
         host_address = match.group(2)
         ansible_user = match.group(3) if match.group(3) else ""
         ssh_config_entries.append(f"Host {host_name}\n    Hostname {host_address}\n    User {ansible_user}")
+
+    directory_path = os.path.dirname(output_path)
+    if not os.path.exists(directory_path):
+        os.makedirs(directory_path)
 
     with open(output_path, 'w') as output_file:
         output_file.write('\n\n'.join(ssh_config_entries))

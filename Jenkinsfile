@@ -12,10 +12,10 @@ pipeline {
         stage('Run Python scripts') {
             steps {
                 script {
-                    sh "python tools/generate_hosts_file.py"
+                    sh "python3 tools/generate_hosts_file.py"
                 }
                 script {
-                    sh "python tools/generate_ssh_config.py"
+                    sh "python3 tools/generate_ssh_config.py"
                 }
             }
         }
