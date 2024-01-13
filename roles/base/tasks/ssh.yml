@@ -18,7 +18,7 @@
 - name: Add specific SSH key to authorized_keys
   ansible.builtin.lineinfile:
     path: /home/{{ username }}/.ssh/authorized_keys
-    line: "{{ lookup('file', 'files/id_rsa.pub') }}"
+    line: "{{ lookup('file', 'files/ssh/id_rsa.pub') }}"
     create: true
     owner: "{{ username }}"
     group: "{{ username }}"
@@ -26,7 +26,7 @@
 
 - name: Create SSH config file
   ansible.builtin.copy:
-    src: ssh_config
+    src: ssh/config
     dest: /home/{{ username }}/.ssh/config
     owner: "{{ username }}"
     group: "{{ username }}"
