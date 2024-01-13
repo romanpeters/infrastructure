@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    options {
+        ansiColor('xterm')
+    }
+
     parameters {
          string(name: 'LIMIT',
              description: 'Limit to specific hosts or groups')

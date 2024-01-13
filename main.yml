@@ -12,6 +12,12 @@
   roles:
     - name: base
 
+- name: Configure Octopi
+  hosts: octopi
+  become: true
+  roles:
+    - name: base
+
 - name: Configure Production
   hosts: production
   become: true
@@ -63,12 +69,6 @@
 
 - name: Configure Kubernetes server
   hosts: pbs
-  become: true
-  roles:
-    - name: base
-
-- name: Configure Octopi
-  hosts: octopi
   become: true
   roles:
     - name: base

@@ -23,7 +23,7 @@
     name: zsh-syntax-highlighting
     state: present
 
-- name: Create zhrc file
+- name: Create zshrc file
   ansible.builtin.copy:
     src: home/zshrc
     dest: /home/{{ username }}/.zshrc
