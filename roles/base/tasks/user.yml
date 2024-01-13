@@ -1,0 +1,20 @@
+---
+- name: Create user
+  ansible.builtin.user:
+    name: "{{ username }}"
+    state: present
+    createhome: true
+
+- name: Add to sudoers file
+  ansible.builtin.lineinfile:
+    path: /etc/sudoers.d/{{ username }}
+    line: "{{ username }} ALL=(ALL:ALL) NOPASSWD:ALL"
+    create: true
+
+- name: Set permissions on sudoers file
+  ansible.builtin.file:
+    path: /etc/sudoers.d/{{ username }}
+    owner: root
+    group: root
+    mode: "0440"
+

@@ -1,0 +1,4 @@
+---
+# tasks file for production
+- name: Include docker compose role tasks
+  ansible.builtin.include_tasks: docker_compose.yml

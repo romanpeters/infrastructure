@@ -1,0 +1,13 @@
+---
+- name: Configure server
+  hosts: "{{ instance }}"
+  become: true
+  roles:
+    - name: base
+      tags: base
+
+    - name: docker
+      tags: [docker, never]
+
+    - name: production
+      tags: [production, never]

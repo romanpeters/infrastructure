@@ -1,0 +1,13 @@
+version: '2.1'
+
+services:
+  heimdall:
+    image: linuxserver/heimdall:2.5.8
+    container_name: heimdall_romanpeters.nl
+    environment:
+      - APP_NAME=romanpeters
+    volumes:
+      - ./heimdall:/config
+    ports:
+      - 3939:80
+    restart: always

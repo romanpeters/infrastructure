@@ -1,0 +1,8 @@
+---
+# tasks file for base
+- name: Include packages role tasks
+  ansible.builtin.include_tasks: packages.yml
+- name: Include user role tasks
+  ansible.builtin.include_tasks: user.yml
+- name: Include zshell role tasks
+  ansible.builtin.include_tasks: zsh.yml

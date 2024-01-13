@@ -1,0 +1,23 @@
+---
+- name: Install Zsh
+  ansible.builtin.package:
+    name: zsh
+    state: present
+
+- name: Clone Oh My Zsh repository
+  ansible.builtin.git:
+    repo: https://github.com/ohmyzsh/ohmyzsh.git
+    dest: /home/{{ username }}/.oh-my-zsh
+  ignore_errors: true
+
+- name: Set owner and group for cloned directory
+  ansible.builtin.file:
+    path: /home/{{ username }}/.oh-my-zsh
+    owner: "{{ username }}"
+    group: "{{ username }}"
+    recurse: true
+
+- name: Change user's shell to Zsh
+  ansible.builtin.user:
+    name: "{{ username }}"
+    shell: /bin/zsh

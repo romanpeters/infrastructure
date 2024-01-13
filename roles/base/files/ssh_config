@@ -1,0 +1,59 @@
+Host vaultwarden
+    Hostname 10.10.10.105
+    User root
+
+Host jenkins
+    Hostname 10.10.10.108
+    User jenkins
+
+Host plex
+    Hostname 10.10.20.21
+    User root
+
+Host hass
+    HostName 10.10.10.111
+    User root
+
+Host production
+    Hostname 10.10.20.25
+    User root
+
+Host networker
+#    HostName 10.10.10.100
+    User root
+
+Host webserver
+    Hostname 10.10.20.10
+    User root
+
+Host romantv
+    Hostname 10.10.20.22
+    User root
+
+Host media
+    Hostname 10.10.20.24
+    User root
+
+Host gpu
+    HostName 10.10.20.30
+    User romanpeters
+
+Host octopi
+    HostName 10.10.10.248
+    User pi
+
+Host pbs
+    HostName 10.10.10.249
+    User root
+
+Host proxmox
+#    HostName 10.10.10.250
+    User root
+
+Host router
+    HostName 10.10.1.254
+    User romanpeters
+
+Host udmp
+    HostName 10.10.10.254
+    User root

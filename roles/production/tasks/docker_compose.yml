@@ -1,0 +1,21 @@
+---
+- name: Ensure Python dependencies
+  pip:
+    name:
+      - requests
+      - docker==6.1.3
+      - docker-compose
+
+- name: Copy Docker Compose files
+  copy:
+    src: "files/{{ item }}/"
+    dest: "/home/{{ username }}/production/{{ item }}/"
+    owner: "{{ username }}"
+    group: "{{ username }}"
+  with_items: "{{ docker_services }}"
+
+- name: Run Docker Compose
+  docker_compose:
+    project_src: "/home/{{ username }}/production/{{ item }}"
+  with_items: "{{ docker_services }}"
+

@@ -1,0 +1,11 @@
+version: '3.7'
+
+services:
+  uptime-tan:
+    image: louislam/uptime-kuma:1.23.11
+    container_name: uptime-tan
+    volumes:
+      - ./data:/app/data
+    ports:
+      - 3003:3001
+    restart: always
