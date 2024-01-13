@@ -12,7 +12,6 @@
       - toilet
       - cowsay
       - sl
-      - zoxide
       - exa
       - bat
       - duf
@@ -25,6 +24,13 @@
       - python3-pip
     state: present
   tags: packages
+
+- name: Uninstall packages
+  ansible.builtin.apt:
+    name:
+      - zoxide
+      - zsh-autosuggestions
+      - zsh-syntax-highlighting
 
 - name: Check if it's a VM
   command: "systemd-detect-virt"
