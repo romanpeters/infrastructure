@@ -7,7 +7,6 @@ source $ZSH/oh-my-zsh.sh
 alias cd="zoxide"
 alias ls="exa"
 alias cat="bat"
-alias du="dust"
 alias df="duf"
 alias grep="ripgrep"
 alias ps="procs"
