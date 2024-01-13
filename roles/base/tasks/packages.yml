@@ -1,6 +1,5 @@
 ---
 - name: Install packages
-  become: true
   ansible.builtin.apt:
     name:
       - vim
@@ -14,3 +13,14 @@
       - python3-pip
     state: present
   tags: packages
+
+- name: Check if it's a VM
+  command: "systemd-detect-virt"
+  register: virt_detection
+  changed_when: false
+
+- name: Install qemu-guest-agent
+  ansible.builtin.apt:
+    name: qemu-guest-agent
+    state: present
+  when: "'kvm' in virt_detection.stdout"
