@@ -9,4 +9,4 @@
 - name: Include hosts tasks
   ansible.builtin.include_tasks: hosts.yml
 - name: Include zshell tasks
-  ansible.builtin.include_tasks: zsh.yml
+  ansible.builtin.include_tasks: shell.yml

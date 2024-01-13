@@ -17,6 +17,13 @@
     group: "{{ username }}"
     recurse: true
 
+- name: Create zhrc file
+  ansible.builtin.copy:
+    src: home/zshrc
+    dest: /home/{{ username }}/.zshrc
+    owner: "{{ username }}"
+    group: "{{ username }}"
+
 - name: Change user's shell to Zsh
   ansible.builtin.user:
     name: "{{ username }}"
