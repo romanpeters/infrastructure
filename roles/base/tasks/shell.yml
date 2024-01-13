@@ -8,14 +8,8 @@
   ansible.builtin.git:
     repo: https://github.com/ohmyzsh/ohmyzsh.git
     dest: /home/{{ username }}/.oh-my-zsh
-  become: "{{ username }}"
-
-- name: Set owner and group for cloned directory
-  ansible.builtin.file:
-    path: /home/{{ username }}/.oh-my-zsh
-    owner: "{{ username }}"
-    group: "{{ username }}"
-    recurse: true
+  become: true
+  become_user: "{{ username }}"
 
 - name: Install plugins
   ansible.builtin.apt:

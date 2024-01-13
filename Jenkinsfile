@@ -15,7 +15,7 @@ pipeline {
             }
         }
 
-        stage('Run Python scripts') {
+        stage('Run Python Scripts') {
             steps {
                 script {
                     sh "python3 tools/generate_hosts_file.py"

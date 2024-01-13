@@ -5,6 +5,7 @@
       - vim
       - neovim
       - git
+      - acl
       - tmux
       - neofetch
       - lolcat

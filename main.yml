@@ -1,4 +1,25 @@
 ---
+- name: Configure Test server
+  hosts: nuc
+  become: true
+  roles:
+    - name: base
+    - name: docker
+
+- name: Configure Jenkins
+  hosts: jenkins
+  become: true
+  roles:
+    - name: base
+
+- name: Configure Production
+  hosts: production
+  become: true
+  roles:
+    - name: base
+    - name: docker
+    - name: production
+
 - name: Configure Bridge
   hosts: bridge
   become: true
@@ -13,14 +34,6 @@
     - name: base
     - name: docker
 
-- name: Configure Production
-  hosts: production
-  become: true
-  roles:
-    - name: base
-    - name: docker
-    - name: production
-
 - name: Configure Plex
   hosts: plex
   become: true
@@ -34,21 +47,8 @@
     - name: base
     - name: docker
 
-- name: Configure Jenkins
-  hosts: jenkins
-  become: true
-  roles:
-    - name: base
-
 - name: Configure Vaultwarden
   hosts: vaultwarden
-  become: true
-  roles:
-    - name: base
-    - name: docker
-
-- name: Configure Test server
-  hosts: nuc
   become: true
   roles:
     - name: base
