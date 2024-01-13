@@ -15,7 +15,7 @@ def generate_ssh_config(inventory_path, output_path):
         host_name = match.group(1)
         host_address = match.group(2)
         ansible_user = match.group(3) if match.group(3) else ""
-        ssh_config_entries.append(f"Host {host_name}\n    Hostname {host_address}\n    User {ansible_user}")
+        ssh_config_entries.append(f"Host {host_name}\n    Hostname {host_address}")
 
     directory_path = os.path.dirname(output_path)
     if not os.path.exists(directory_path):
