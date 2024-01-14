@@ -1,6 +1,6 @@
 ---
 - name: Remove authorized_keys for root
-  file:
+  ansible.builtin.file:
     path: /root/.ssh/authorized_keys
     state: absent
 
@@ -9,40 +9,41 @@
     src: /etc/ssh/sshd_config
     dest: /etc/ssh/sshd_config.bak
 
-- name: Disable root login
-  ansible.builtin.lineinfile:
-    path: /etc/ssh/sshd_config
-    regexp: '^\s*#?\s*PermitRootLogin'
-    line: 'PermitRootLogin no'
+- name: Perform SSH configuration changes
+  block:
+    - name: Disable root login
+      ansible.builtin.lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^\s*#?\s*PermitRootLogin'
+        line: 'PermitRootLogin no'
 
-- name: Disable SSH password authentication
-  ansible.builtin.lineinfile:
-    path: /etc/ssh/sshd_config
-    regexp: '^\s*#?\s*PasswordAuthentication'
-    line: 'PasswordAuthentication no'
+    - name: Disable SSH password authentication
+      ansible.builtin.lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^\s*#?\s*PasswordAuthentication'
+        line: 'PasswordAuthentication no'
 
-- name: Validate SSH server configuration
-  ansible.builtin.shell:
-    cmd: 'sshd -t'
-  ignore_errors: true
-  register: sshd_config_validation
-  changed_when: false
+    - name: Validate SSH server configuration
+      ansible.builtin.shell:
+        cmd: 'sshd -t'
+      register: sshd_config_validation
+      changed_when: false
+      notify: Restart ssh
 
-- name: Display validation errors (if any)
-  ansible.builtin.debug:
-    msg: "{{ sshd_config_validation.stdout }}"
-  when: sshd_config_validation.rc != 0
+  rescue:
+    - name: Display validation errors
+      ansible.builtin.debug:
+        msg: "{{ sshd_config_validation.stdout }}"
+      when: sshd_config_validation.rc != 0
 
-- name: Restore original sshd_config if validation fails
-  ansible.builtin.copy:
-    src: /etc/ssh/sshd_config.bak
-    dest: /etc/ssh/sshd_config
-  when: sshd_config_validation.rc != 0
-  become: true
+    - name: Restore original sshd_config
+      ansible.builtin.copy:
+        src: /etc/ssh/sshd_config.bak
+        dest: /etc/ssh/sshd_config
 
-- name: Restart SSH service if configuration is valid
-  ansible.builtin.service:
-    name: ssh
-    state: restarted
-  when: sshd_config_validation.rc == 0
-  become: true
+  always:
+    - name: Remove sshd_config.bak file
+      ansible.builtin.file:
+        path: /etc/ssh/sshd_config.bak
+        state: absent
+

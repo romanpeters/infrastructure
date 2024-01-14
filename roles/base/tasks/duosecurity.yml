@@ -5,56 +5,44 @@
       ansible.builtin.copy:
         src: usr/sbin/custom_duo_login
         dest: /usr/sbin/custom_duo_login
-      register: custom_duo_copy_result
 
     - name: Create duosecurity.list file
       ansible.builtin.copy:
         content: "deb [arch={{ ansible_architecture }}] https://pkg.duosecurity.com/{{ ansible_distribution }} {{ ansible_distribution_release }} main"
         dest: /etc/apt/sources.list.d/duosecurity.list
-      register: duosecurity_copy_result
 
     - name: Import DUO GPG public key
       ansible.builtin.apt_key:
         url: https://duo.com/DUO-GPG-PUBLIC-KEY.asc
         state: present
-      become: true
-      register: duo_key_result
 
     - name: Update APT repositories
       ansible.builtin.apt:
         update_cache: yes
-      become: true
 
     - name: Install duo-unix package
       ansible.builtin.apt:
         name: duo-unix
         state: present
-      become: true
-      register: duo_install_result
 
   rescue:
     - name: Undo changes if custom DUO Login was copied
       ansible.builtin.file:
         path: /usr/sbin/custom_duo_login
         state: absent
-      when: custom_duo_copy_result.failed
 
     - name: Remove duosecurity.list file
       ansible.builtin.file:
         path: /etc/apt/sources.list.d/duosecurity.list
         state: absent
-      when: duosecurity_copy_result.failed
 
     - name: Remove DUO GPG public key
       ansible.builtin.apt_key:
         id: "C927EBE00F1B0520"
         state: absent
-      when: duo_key_result.failed
 
     - name: Remove duo-unix package
       ansible.builtin.apt:
         name: duo-unix
         state: absent
-      become: true
-      when: duo_install_result.changed
 

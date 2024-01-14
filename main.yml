@@ -1,7 +1,7 @@
 ---
 - name: Configure Base
   hosts: default
-  strategy: free
+  strategy: ansible.builtin.free
   become: true
   roles:
     - name: base
@@ -14,7 +14,7 @@
     - name: docker
 
 - name: Configure Production
-  hosts: prouction
+  hosts: production
   become: true
   roles:
     - name: production
