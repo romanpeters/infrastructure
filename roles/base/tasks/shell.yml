@@ -25,11 +25,6 @@
   become: true
   become_user: "{{ username }}"
 
-- name: Install zsh-syntax-highlight package
-  ansible.builtin.apt:
-    name: zsh-syntax-highlighting
-    state: absent
-
 - name: Create zshrc file
   ansible.builtin.copy:
     src: home/zshrc
