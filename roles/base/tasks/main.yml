@@ -4,11 +4,13 @@
   ansible.builtin.include_tasks: packages.yml
 - name: Include user tasks
   ansible.builtin.include_tasks: user.yml
-- name: Include ssh tasks
-  ansible.builtin.include_tasks: ssh.yml
-- name: Include security tasks
-  ansible.builtin.include_tasks: security.yml
 - name: Include hosts tasks
   ansible.builtin.include_tasks: hosts.yml
+- name: Include ssh tasks
+  ansible.builtin.include_tasks: ssh.yml
+- name: Include ssh hardening tasks
+  ansible.builtin.include_tasks: ssh-hardening.yml
+- name: Include DUO Security tasks
+  ansible.builtin.include_tasks: duosecurity.yml
 - name: Include zshell tasks
   ansible.builtin.include_tasks: shell.yml

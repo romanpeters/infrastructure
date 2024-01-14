@@ -1,0 +1,31 @@
+#! /bin/bash
+
+# This script prompts users logging in over SSH for Duo MFA authentication
+
+# Enable it by adding this line to sshd_config:
+# ForceCommand login_duo
+
+# The script must be executable by the user logging in
+# login_duo needs to be installed, see https://duo.com/docs/loginduo
+
+# Allowed IP range
+ALLOWED_IPS=(
+	"10.10.10.1"
+	"10.10.20.2"
+	"10.10.20.3"
+  "100.74.157.93"
+  )
+
+CLIENT_IP=$(echo $SSH_CLIENT | awk '{print $1}')
+
+if [[ " ${ALLOWED_IPS[@]} " =~ " $CLIENT_IP " ]]; then
+    if [[ -z $SSH_ORIGINAL_COMMAND ]]
+      then
+        exec $SHELL -il
+    else
+      exec $SHELL -c "$SSH_ORIGINAL_COMMAND"
+    fi
+    exit 0
+else
+    login_duo
+fi
