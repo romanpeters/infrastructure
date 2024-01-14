@@ -18,10 +18,17 @@
   become: true
   become_user: "{{ username }}"
 
+- name: Install zsh-syntax-highlight plugin
+  git:
+    repo: https://github.com/zsh-users/zsh-syntax-highlighting.git
+    dest: /home/{{ username }}/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
+  become: true
+  become_user: "{{ username }}"
+
 - name: Install zsh-syntax-highlight package
   ansible.builtin.apt:
     name: zsh-syntax-highlighting
-    state: present
+    state: absent
 
 - name: Create zshrc file
   ansible.builtin.copy:
