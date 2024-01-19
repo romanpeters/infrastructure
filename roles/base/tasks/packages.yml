@@ -1,6 +1,6 @@
 ---
 - name: Install required packages
-  ansible.builtin.apt:
+  ansible.builtin.package:
     name:
       - vim
       - neovim
@@ -22,7 +22,7 @@
     state: present
 
 - name: Install optional packages
-  ansible.builtin.apt:
+  ansible.builtin.package:
     name: "{{ item }}"
     state: present
   loop:
@@ -38,7 +38,7 @@
   changed_when: false
 
 - name: Install qemu-guest-agent
-  ansible.builtin.apt:
+  ansible.builtin.package:
     name: qemu-guest-agent
     state: present
   when: "'kvm' in virt_detection.stdout"
