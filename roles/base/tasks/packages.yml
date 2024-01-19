@@ -1,35 +1,29 @@
 ---
-- name: Install required packages
-  ansible.builtin.package:
-    name:
-      - vim
-      - neovim
-      - git
-      - acl
-      - tmux
-      - neofetch
-      - lolcat
-      - toilet
-      - cowsay
-      - sl
-      - exa
-      - ripgrep
-      - tldr
-      - command-not-found
-      - trash-cli
-      - python3
-      - python3-pip
-    state: present
-  ignore_errors: true
-
-- name: Install optional packages
+- name: Install packages
   ansible.builtin.package:
     name: "{{ item }}"
     state: present
   loop:
-      - btop
-      - bat
-      - duf
+    - vim
+    - neovim
+    - git
+    - acl
+    - tmux
+    - neofetch
+    - lolcat
+    - toilet
+    - cowsay
+    - sl
+    - exa
+    - ripgrep
+    - tldr
+    - command-not-found
+    - trash-cli
+    - btop
+    - bat
+    - duf
+    - python3
+    - python3-pip
   ignore_errors: true
 
 - name: Check if it's a VM
