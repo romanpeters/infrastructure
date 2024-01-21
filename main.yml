@@ -1,6 +1,7 @@
 ---
 - name: Run Prerequisites
   hosts: localhost
+  gather_facts: false
   tasks:
     - name: Execute Python script
       command: python3 tools/{{ item }}
