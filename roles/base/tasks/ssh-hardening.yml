@@ -8,6 +8,7 @@
   ansible.builtin.copy:
     src: /etc/ssh/sshd_config
     dest: /etc/ssh/sshd_config.bak
+    remote_src: true
 
 - name: Perform SSH configuration changes
   block:
@@ -40,6 +41,7 @@
       ansible.builtin.copy:
         src: /etc/ssh/sshd_config.bak
         dest: /etc/ssh/sshd_config
+        remote_src: true
 
   always:
     - name: Remove sshd_config.bak file
