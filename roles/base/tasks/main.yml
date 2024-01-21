@@ -2,16 +2,22 @@
 # tasks file for base
 - name: Include packages tasks
   ansible.builtin.include_tasks: packages.yml
+
 - name: Include user tasks
   ansible.builtin.include_tasks: user.yml
+
 - name: Include hosts tasks
   ansible.builtin.include_tasks: hosts.yml
+
 - name: Include ssh tasks
   ansible.builtin.include_tasks: ssh.yml
+
 - name: Include ssh hardening tasks
   ansible.builtin.include_tasks: ssh-hardening.yml
+
 - name: Include DUO Security tasks
   ansible.builtin.include_tasks: duosecurity.yml
   when: "ansible_facts['distribution'] == 'Ubuntu'"
+
 - name: Include zshell tasks
   ansible.builtin.include_tasks: shell.yml

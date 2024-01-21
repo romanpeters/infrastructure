@@ -26,7 +26,7 @@
         state: present
 
   rescue:
-    - name: Undo changes if custom DUO Login was copied
+    - name: Undo changes
       ansible.builtin.file:
         path: /usr/sbin/custom_duo_login
         state: absent
