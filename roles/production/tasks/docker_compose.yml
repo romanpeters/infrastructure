@@ -12,10 +12,10 @@
     dest: "/home/{{ username }}/production/{{ item }}/"
     owner: "{{ username }}"
     group: "{{ username }}"
-  with_items: "{{ docker_services }}"
+  loop: "{{ docker_services }}"
 
 - name: Run Docker Compose
-  docker_compose:
-    project_src: "/home/{{ username }}/production/{{ item }}"
-  with_items: "{{ docker_services }}"
-
+  command: docker compose up -d
+  args:
+    chdir: "/home/{{ username }}/production/{{ item }}"
+  loop: "{{ docker_services }}"
