@@ -4,6 +4,8 @@ ZSH_THEME="robbyrussell"
 plugins=(git command-not-found zsh-autosuggestions zsh-syntax-highlighting)
 source $ZSH/oh-my-zsh.sh
 
+export PATH=$PATH:~/.local/bin
+
 alias ls="exa"
 alias grep="rg"
 
