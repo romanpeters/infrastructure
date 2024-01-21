@@ -1,4 +1,14 @@
 ---
+- name: Run Prerequisites
+  hosts: localhost
+  tasks:
+    - name: Execute Python script
+      command: python3 tools/{{ item }}
+      become: no
+      loop:
+        - generate_hosts_file.py
+        - generate_ssh_config.py
+
 - name: Configure Base
   hosts: default
   strategy: ansible.builtin.free
