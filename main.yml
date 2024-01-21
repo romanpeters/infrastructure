@@ -8,6 +8,9 @@
       loop:
         - generate_hosts_file.py
         - generate_ssh_config.py
+    - name: Install Ansible community.general collection
+      command: ansible-galaxy collection install community.general
+      become: yes
 
 - name: Configure Base
   hosts: default
