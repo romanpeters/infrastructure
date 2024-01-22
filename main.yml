@@ -19,14 +19,6 @@
 
 - name: Configure Docker
   hosts: docker
-  strategy: free
   become: true
   roles:
     - name: docker
-
-- name: Configure Production
-  hosts: production
-  become: true
-  roles:
-    - name: production
-

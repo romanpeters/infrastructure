@@ -4,6 +4,6 @@
 version: 2
 updates:
   - package-ecosystem: "docker"
-    directory: "/" # Location of package manifests
+    directory: "roles/docker/files"
     schedule:
       interval: "daily"

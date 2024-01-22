@@ -5,16 +5,11 @@
     state: present
     createhome: true
 
-- name: Add to sudoers file
+- name: Add passwordless sudo
   ansible.builtin.lineinfile:
     path: /etc/sudoers.d/{{ username }}
-    line: "{{ username }} ALL=(ALL:ALL) NOPASSWD:ALL"
+    state: present
     create: true
-
-- name: Set permissions on sudoers file
-  ansible.builtin.file:
-    path: /etc/sudoers.d/{{ username }}
-    owner: root
-    group: root
     mode: "0440"
-
+    line: "{{ username }} ALL=(ALL:ALL) NOPASSWD:ALL"
+    validate: /usr/sbin/visudo -cf %s

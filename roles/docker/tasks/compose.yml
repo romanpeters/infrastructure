@@ -8,8 +8,8 @@
 
 - name: Copy Docker Compose files
   copy:
-    src: "files/{{ item }}/"
-    dest: "/home/{{ username }}/production/{{ item }}/"
+    src: "files/{{ item }}.docker_compose.yml"
+    dest: "/home/{{ username }}/docker/{{ item }}/docker_compose.yml"
     owner: "{{ username }}"
     group: "{{ username }}"
   loop: "{{ docker_services }}"
@@ -17,5 +17,5 @@
 - name: Run Docker Compose
   command: docker compose up -d
   args:
-    chdir: "/home/{{ username }}/production/{{ item }}"
+    chdir: "/home/{{ username }}/docker/{{ item }}"
   loop: "{{ docker_services }}"
