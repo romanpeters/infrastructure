@@ -1,0 +1,39 @@
+version: '2.1'
+
+services:
+  heimdall:
+    container_name: heimdall_rtv
+    image: linuxserver/heimdall:2.5.8
+    environment:
+      - APP_NAME=RomanTV
+    volumes:
+      - ./heimdall:/config
+    ports:
+      - 3838:80
+    #  - 443:443
+    restart: unless-stopped
+
+  tautulli:
+    image: linuxserver/tautulli:2.13.4
+    container_name: tautulli
+    environment:
+      - PUID=1080
+      - PGID=1080
+      - TZ=Europe/Amsterdam
+    ports:
+      - 4232:8181
+    volumes:
+      - ./tautulli:/config
+    restart: unless-stopped
+
+  overseerr:
+    image: sctx/overseerr:1.33.2
+    container_name: overseerr
+    ports:
+      - 5055:5055
+    volumes:
+      - ./overseerr/config/:/app/config
+    environment:
+      - LOG_LEVEL=info
+      - TZ=Europe/Amsterdam
+    restart: unless-stopped
