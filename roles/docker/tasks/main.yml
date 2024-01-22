@@ -5,3 +5,5 @@
 
 - name: Include docker compose tasks
   ansible.builtin.include_tasks: compose.yml
+  when: docker_services is defined
+

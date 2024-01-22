@@ -6,10 +6,16 @@
       - docker==6.1.3
       - docker-compose
 
+- name: Ensure the directory exists
+  ansible.builtin.file:
+    path: "/home/{{ username }}/docker/{{ item }}"
+    state: directory
+  loop: "{{ docker_services }}"
+
 - name: Copy Docker Compose files
   copy:
-    src: "files/{{ item }}.docker_compose.yml"
-    dest: "/home/{{ username }}/docker/{{ item }}/docker_compose.yml"
+    src: "files/{{ item }}.docker-compose.yml"
+    dest: "/home/{{ username }}/docker/{{ item }}/docker-compose.yml"
     owner: "{{ username }}"
     group: "{{ username }}"
   loop: "{{ docker_services }}"

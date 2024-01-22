@@ -7,14 +7,6 @@
     group: "{{ username }}"
     mode: "0700"
 
-- name: Ensure authorized_keys file exists
-  ansible.builtin.file:
-    path: /home/{{ username }}/.ssh/authorized_keys
-    state: touch
-    owner: "{{ username }}"
-    group: "{{ username }}"
-    mode: "0600"
-
 - name: Add specific SSH key to authorized_keys
   ansible.builtin.lineinfile:
     path: /home/{{ username }}/.ssh/authorized_keys
