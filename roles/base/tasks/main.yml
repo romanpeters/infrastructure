@@ -19,5 +19,9 @@
   ansible.builtin.include_tasks: duosecurity.yml
   when: "ansible_facts['distribution'] == 'Ubuntu'"
 
+- name: Include Ubunutu tasks
+  ansible.builtin.include_tasks: ubuntu.yml
+  when: "ansible_facts['distribution'] == 'Ubuntu'"
+
 - name: Include zshell tasks
   ansible.builtin.include_tasks: shell.yml
