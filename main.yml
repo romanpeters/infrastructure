@@ -9,6 +9,7 @@
       loop:
         - generate_hosts_file.py
         - generate_ssh_config.py
+      tags: always
 
 - name: Configure Base
   hosts: default
