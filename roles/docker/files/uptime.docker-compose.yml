@@ -1,9 +1,9 @@
 version: '3.7'
 
 services:
-  uptime-tan:
+  uptime:
     image: louislam/uptime-kuma:1.23.11
-    container_name: uptime-tan
+    container_name: uptime
     volumes:
       - ./data:/app/data
     ports:

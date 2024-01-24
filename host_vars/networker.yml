@@ -2,3 +2,4 @@
 docker_services:
   - adguard
   - nginx_proxy_manager
+  - uptime
