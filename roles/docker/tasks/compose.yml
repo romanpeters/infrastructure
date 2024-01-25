@@ -13,7 +13,7 @@
   loop: "{{ docker_services }}"
 
 - name: Copy Docker Compose files
-  copy:
+  ansible.builtin.copy:
     src: "files/{{ item }}.docker-compose.yml"
     dest: "/home/{{ username }}/docker/{{ item }}/docker-compose.yml"
     owner: "{{ username }}"
@@ -21,7 +21,8 @@
   loop: "{{ docker_services }}"
 
 - name: Run Docker Compose
-  command: docker compose up -d
-  args:
-    chdir: "/home/{{ username }}/docker/{{ item }}"
+  community.docker.docker_compose:
+    project_src: "/home/{{ username }}/docker/{{ item }}"
+    state: present
   loop: "{{ docker_services }}"
+

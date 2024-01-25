@@ -3,4 +3,4 @@ docker_services:
   - changedetection
   - hello
   - homebox
-  - uptime-tan
+  - uptime_tan
