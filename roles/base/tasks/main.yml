@@ -26,6 +26,9 @@
 - name: Include zshell tasks
   ansible.builtin.include_tasks: shell.yml
 
+- name: Include config tasks
+  ansible.builtin.include_tasks: config.yml
+
 - name: Include cron tasks
   ansible.builtin.include_tasks: cron.yml
   
