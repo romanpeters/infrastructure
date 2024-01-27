@@ -9,6 +9,7 @@
     src: /etc/ssh/sshd_config
     dest: /etc/ssh/sshd_config.bak
     remote_src: true
+  changed_when: false
 
 - name: Perform SSH configuration changes
   block:
@@ -48,4 +49,5 @@
       ansible.builtin.file:
         path: /etc/ssh/sshd_config.bak
         state: absent
+      changed_when: false
 
