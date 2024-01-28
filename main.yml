@@ -13,7 +13,7 @@
 
 - name: Configure Base
   hosts: default
-  strategy: ansible.builtin.free
+  strategy: "{{ strategy | default('ansible.builtin.linear') }}"
   become: true
   roles:
     - name: base
