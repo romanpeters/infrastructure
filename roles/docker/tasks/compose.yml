@@ -8,20 +8,20 @@
 
 - name: Ensure the directory exists
   ansible.builtin.file:
-    path: /home/{{ username }}/docker/{{ item }}
+    path: "{{ ansible_env.HOME }}/docker/{{ item }}"
     state: directory
   loop: "{{ docker_services }}"
 
 - name: Copy Docker Compose files
   ansible.builtin.copy:
-    src: files/{{ item }}.docker-compose.yml
-    dest: /home/{{ username }}/docker/{{ item }}/docker-compose.yml
+    src: "{{ item }}.yml"
+    dest: "{{ ansible_env.HOME }}/docker/{{ item }}/docker-compose.yml"
     owner: "{{ username }}"
     group: "{{ username }}"
   loop: "{{ docker_services }}"
 
 - name: Run Docker Compose
   community.docker.docker_compose:
-    project_src: /home/{{ username }}/docker/{{ item }}
+    project_src: "{{ ansible_env.HOME }}/{{ username }}/docker/{{ item }}"
     state: present
   loop: "{{ docker_services }}"
