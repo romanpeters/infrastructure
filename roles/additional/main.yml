@@ -1,0 +1,7 @@
+---
+- name: Include DUO Security tasks
+  ansible.builtin.include_tasks: duosecurity.yml
+  when: ansible_facts['distribution'] == 'Ubuntu'
+
+- name: Include cron tasks
+  ansible.builtin.include_tasks: cron.yml

@@ -13,3 +13,10 @@
   roles:
     - role: docker
       tags: docker
+
+- name: Configure additional
+  hosts: default
+  become: true
+  roles:
+    - role: additional
+      tags: additional
