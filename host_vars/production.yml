@@ -1,6 +1,5 @@
 ---
 docker_services:
-  - traefik
   - changedetection
   - hello
   - homebox
