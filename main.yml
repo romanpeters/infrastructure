@@ -5,9 +5,11 @@
   become: true
   roles:
     - role: base
+      tags: base
 
 - name: Configure Docker
   hosts: docker
   become: true
   roles:
     - role: docker
+      tags: docker
