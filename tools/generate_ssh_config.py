@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+
 import os
 import re
 
@@ -17,7 +18,6 @@ def generate_ssh_config(inventory_path, output_path):
     for match in sorted(pattern.finditer(inventory_content), key=lambda m: m.group(2)):
         host_name = match.group(1)
         host_address = match.group(2)
-        ansible_user = match.group(3) if match.group(3) else ""
         ssh_config_entries.append(f"Host {host_name}\n    Hostname {host_address}")
 
     directory_path = os.path.dirname(output_path)
