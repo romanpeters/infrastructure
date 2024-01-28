@@ -1,5 +1,6 @@
 ---
 docker_services:
+  - traefik
   - adguard
   - nginx_proxy_manager
   - uptime
