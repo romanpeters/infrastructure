@@ -1,0 +1,5 @@
+---
+- name: Copy Git configuration
+  ansible.builtin.template:
+    src: gitconfig.j2
+    dest: "{{ ansible_env.HOME }}/.gitconfig"
