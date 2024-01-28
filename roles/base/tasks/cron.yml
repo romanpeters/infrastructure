@@ -5,4 +5,4 @@
     minute: "*/15"
     job: ping -c 2 1.1.1.1 > /dev/null 2>&1 || tower-cli job launch --job-template="reboot-router"
   when: ansible_hostname == 'rhel'
-
+  run_once: true
