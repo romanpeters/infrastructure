@@ -8,7 +8,7 @@
 
 - name: Ensure the directory exists
   ansible.builtin.file:
-    path: "{{ ansible_env.HOME }}/{{ username }}/docker/{{ item }}"
+    path: "/home/{{ username }}/docker/{{ item }}"
     state: directory
   loop: "{{ docker_services }}"
 
