@@ -4,5 +4,6 @@
     name: reboot-router
     minute: "*/15"
     job: ping -c 2 1.1.1.1 > /dev/null 2>&1 || tower-cli job launch --job-template="reboot-router"
+  delegate_to: "{{ username }}"
   when: ansible_hostname == 'rhel'
   run_once: true
