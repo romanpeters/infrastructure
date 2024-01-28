@@ -1,16 +1,4 @@
 ---
-- name: Run Prerequisites
-  hosts: localhost
-  gather_facts: false
-  tasks:
-    - name: Execute Python script
-      ansible.builtin.script: tools/{{ item }}
-      become: false
-      loop:
-        - generate_hosts_file.py
-        - generate_ssh_config.py
-      tags: always
-
 - name: Configure Base
   hosts: default
   strategy: "{{ strategy | default('ansible.builtin.linear') }}"

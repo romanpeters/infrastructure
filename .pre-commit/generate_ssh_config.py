@@ -4,7 +4,7 @@
 import os
 import re
 
-ANSIBLE_INVENTORY_PATH = "inventory.ini"
+ANSIBLE_INVENTORY_PATH = "../inventory/inventory.ini"
 SSH_CONFIG_FILE_PATH = "roles/base/files/ssh/config"
 
 
