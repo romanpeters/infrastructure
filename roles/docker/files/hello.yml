@@ -10,5 +10,5 @@ services:
     volumes:
       - ./heimdall:/config
     ports:
-      - 3939:80
+      - 3939:3939
     restart: always
