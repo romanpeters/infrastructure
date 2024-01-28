@@ -4,8 +4,8 @@
   gather_facts: false
   tasks:
     - name: Execute Python script
-      command: python3 tools/{{ item }}
-      become: no
+      ansible.builtin.script: tools/{{ item }}
+      become: false
       loop:
         - generate_hosts_file.py
         - generate_ssh_config.py
@@ -16,10 +16,10 @@
   strategy: "{{ strategy | default('ansible.builtin.linear') }}"
   become: true
   roles:
-    - name: base
+    - role: base
 
 - name: Configure Docker
   hosts: docker
   become: true
   roles:
-    - name: docker
+    - role: docker

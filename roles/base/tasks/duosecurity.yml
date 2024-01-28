@@ -8,7 +8,7 @@
 
     - name: Create duosecurity.list file
       ansible.builtin.copy:
-        content: "deb [arch={{ ansible_architecture }}] https://pkg.duosecurity.com/{{ ansible_distribution }} {{ ansible_distribution_release }} main"
+        content: deb [arch={{ ansible_architecture }}] https://pkg.duosecurity.com/{{ ansible_distribution }} {{ ansible_distribution_release }} main
         dest: /etc/apt/sources.list.d/duosecurity.list
 
     - name: Import DUO GPG public key
@@ -18,7 +18,7 @@
 
     - name: Update APT repositories
       ansible.builtin.apt:
-        update_cache: yes
+        update_cache: true
 
     - name: Install duo-unix package
       ansible.builtin.apt:
@@ -38,11 +38,10 @@
 
     - name: Remove DUO GPG public key
       ansible.builtin.apt_key:
-        id: "C927EBE00F1B0520"
+        id: C927EBE00F1B0520
         state: absent
 
     - name: Remove duo-unix package
       ansible.builtin.apt:
         name: duo-unix
         state: absent
-

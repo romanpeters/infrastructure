@@ -17,11 +17,11 @@
 
 - name: Include DUO Security tasks
   ansible.builtin.include_tasks: duosecurity.yml
-  when: "ansible_facts['distribution'] == 'Ubuntu'"
+  when: ansible_facts['distribution'] == 'Ubuntu'
 
 - name: Include Ubunutu tasks
   ansible.builtin.include_tasks: ubuntu.yml
-  when: "ansible_facts['distribution'] == 'Ubuntu'"
+  when: ansible_facts['distribution'] == 'Ubuntu'
 
 - name: Include zshell tasks
   ansible.builtin.include_tasks: shell.yml
@@ -31,4 +31,3 @@
 
 - name: Include cron tasks
   ansible.builtin.include_tasks: cron.yml
-  

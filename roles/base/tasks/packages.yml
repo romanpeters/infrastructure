@@ -27,7 +27,7 @@
   ignore_errors: true
 
 - name: Check if it's a VM
-  command: "systemd-detect-virt"
+  ansible.builtin.command: systemd-detect-virt
   register: virt_detection
   ignore_errors: true
   changed_when: false
