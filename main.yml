@@ -14,9 +14,8 @@
     - role: docker
       tags: docker
 
-- name: Configure additional
-  hosts: default
-  become: true
-  roles:
-    - role: additional
-      tags: additional
+- name: Specific to rhel host
+  ansible.builtin.import_playbook: plays/rhel.yml
+
+- name: Specific to plex host
+  ansible.builtin.import_playbook: plays/plex.yml
