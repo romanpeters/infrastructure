@@ -9,13 +9,22 @@
 
 - name: Configure Docker
   hosts: docker
+  strategy: "{{ strategy | default('ansible.builtin.linear') }}"
   become: true
   roles:
     - role: docker
       tags: docker
 
-- name: Specific to rhel host
-  ansible.builtin.import_playbook: plays/rhel.yml
+- name: Configure rhel host
+  hosts: rhel
+  tasks:
+    - name: Include reboot-router cron tasks
+      ansible.builtin.import_tasks:
+        file: tasks/reboot-router-cron.yml
 
-- name: Specific to plex host
-  ansible.builtin.import_playbook: plays/plex.yml
+- name: Configure plex host
+  hosts: plex
+  tasks:
+    - name: Include nowplaying tasks
+      ansible.builtin.import_tasks:
+        file: tasks/nowplaying.yml

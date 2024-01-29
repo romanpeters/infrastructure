@@ -1,0 +1,41 @@
+---
+- name: Clone Plex NowPlaying repository
+  ansible.builtin.git:
+    repo: "git@github.com:arcadellama/plex-nowplaying.git"
+    dest: "/home/{{ username }}/plex-nowplaying"
+    update: true
+
+- name: Move nowplaying to /usr/local/bin
+  ansible.builtin.copy:
+    src: "/home/{{ username }}/plex-nowplaying/nowplaying"
+    dest: "/usr/local/bin/"
+    remote_src: true
+
+- name: Create nowplaying config
+  ansible.builtin.copy:
+    src: "/home/{{ username }}/plex-nowplaying/nowplaying.conf.example"
+    dest: "/home/{{ username }}/.config/nowplaying.conf"
+    remote_src: true
+
+- name: Set NP_PLEX_HOST in nowplaying.conf
+  ansible.builtin.lineinfile:
+    path: "/home/{{ username }}/.config/nowplaying.conf"
+    regexp: '^(\s*)NP_PLEX_HOST\s*=\s*\S.*'
+    line: 'NP_PLEX_HOST=127.0.0.1'
+
+- name: Set NP_PLEX_PORT in nowplaying.conf
+  ansible.builtin.lineinfile:
+    path: "/home/{{ username }}/.config/nowplaying.conf"
+    regexp: '^(\s*)NP_PLEX_PORT\s*=\s*\S.*'
+    line: 'NP_PLEX_PORT=32400'
+
+- name: Set NP_PLEX_TOKEN in nowplaying.conf
+  ansible.builtin.lineinfile:
+    path: "/home/{{ username }}/.config/nowplaying.conf"
+    regexp: '^(\s*)NP_PLEX_TOKEN\s*=\s*\S.*'
+    line: 'NP_PLEX_TOKEN={{ plex_token }}'
+
+- name: Cleanup nowplaying
+  ansible.builtin.file:
+    path: "/home/{{ username }}/plex-nowplaying"
+    state: absent
