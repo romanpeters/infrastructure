@@ -4,6 +4,8 @@
     repo: "git@github.com:arcadellama/plex-nowplaying.git"
     dest: "/home/{{ username }}/plex-nowplaying"
     update: true
+  become: true
+  become_user: "{{ username }}"
 
 - name: Move nowplaying to /usr/local/bin
   ansible.builtin.copy:
