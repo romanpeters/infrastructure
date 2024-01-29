@@ -12,6 +12,7 @@
     src: "/home/{{ username }}/plex-nowplaying/nowplaying"
     dest: "/usr/local/bin/"
     remote_src: true
+  become: true
 
 - name: Create nowplaying config
   ansible.builtin.copy:
