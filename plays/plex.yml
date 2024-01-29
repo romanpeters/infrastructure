@@ -1,0 +1,27 @@
+---
+- name: Playbook for Plex host
+  hosts: plex
+  become: true
+  tasks:
+    - name: Clone Plex NowPlaying repository
+      ansible.builtin.git:
+        repo: "git@github.com:arcadellama/plex-nowplaying.git"
+        dest: "/home/{{ username }}/plex-nowplaying"
+        update: true
+
+    - name: Move nowplaying to /usr/local/bin
+      ansible.builtin.copy:
+        src: "/home/{{ username }}/plex-nowplaying/nowplaying"
+        dest: "/usr/local/bin/"
+        remote_src: true
+
+    - name: Create nowplaying config
+      ansible.builtin.copy:
+        src: "/home/{{ username }}/plex-nowplaying/nowplaying.conf.example"
+        dest: "/home/{{ username }}/.config/nowplaying.conf"
+        remote_src: true
+
+    - name: Cleanup nowplaying
+      ansible.builtin.file:
+        path: "/home/{{ username }}/plex-nowplaying"
+        state: absent
