@@ -2,6 +2,8 @@
 - name: Playbook for Plex host
   hosts: plex
   become: true
+  vars_files:
+    - group_vars/all.yml
   tasks:
     - name: Clone Plex NowPlaying repository
       ansible.builtin.git:

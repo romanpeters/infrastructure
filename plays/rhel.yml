@@ -1,6 +1,8 @@
 ---
 - name: Playbook for RHEL host
   hosts: rhel
+  vars_files:
+    - group_vars/all.yml
   tasks:
     - name: Reboot router cronjob
       ansible.builtin.cron:
