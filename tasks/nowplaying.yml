@@ -1,7 +1,7 @@
 ---
 - name: Clone Plex NowPlaying repository
   ansible.builtin.git:
-    repo: "git@github.com:arcadellama/plex-nowplaying.git"
+    repo: "https://github.com/arcadellama/plex-nowplaying.git"
     dest: "/home/{{ username }}/plex-nowplaying"
     update: true
   become: true
