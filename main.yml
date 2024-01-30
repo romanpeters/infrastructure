@@ -5,9 +5,26 @@
   become: true
   roles:
     - role: base
+      tags: base
 
 - name: Configure Docker
   hosts: docker
+  strategy: "{{ strategy | default('ansible.builtin.linear') }}"
   become: true
   roles:
     - role: docker
+      tags: docker
+
+- name: Configure rhel host
+  hosts: rhel
+  tasks:
+    - name: Include reboot-router cron tasks
+      ansible.builtin.import_tasks:
+        file: tasks/reboot-router-cron.yml
+
+- name: Configure plex host
+  hosts: plex
+  tasks:
+    - name: Include nowplaying tasks
+      ansible.builtin.import_tasks:
+        file: tasks/nowplaying.yml
