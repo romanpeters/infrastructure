@@ -14,7 +14,13 @@ services:
       ADMIN_TOKEN: "{{ vaultwarden_admin_token }}"
     volumes:
       - ./data:/data
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.vaultwarden.rule=Host(`vaultwarden.romanpeters.nl`)"
+      - "traefik.http.services.vaultwarden.loadbalancer.server.port=80"
+      - "traefik.http.services.vaultwarden.loadbalancer.server.scheme=http"
     ports:
       - '3012:3012'  # websocket
       - '3011:80'
     restart: unless-stopped
+
