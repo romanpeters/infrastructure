@@ -1,0 +1,53 @@
+Host router
+    Hostname 10.10.1.254
+
+Host networker
+    Hostname 10.10.10.100
+
+Host vaultwarden
+    Hostname 10.10.10.105
+
+Host jenkins
+    Hostname 10.10.10.108
+
+Host hass
+    Hostname 10.10.10.111
+
+Host octopi
+    Hostname 10.10.10.248
+
+Host pbs
+    Hostname 10.10.10.249
+
+Host proxmox
+    Hostname 10.10.10.250
+
+Host udmp
+    Hostname 10.10.10.254
+
+Host nas
+    Hostname 10.10.10.99
+
+Host webserver
+    Hostname 10.10.20.10
+
+Host nuc
+    Hostname 10.10.20.20
+
+Host plex
+    Hostname 10.10.20.21
+
+Host romantv
+    Hostname 10.10.20.22
+
+Host production
+    Hostname 10.10.20.25
+
+Host #kubernetes
+    Hostname 10.10.20.28
+
+Host gpu
+    Hostname 10.10.20.30
+
+Host rhel
+    Hostname 10.10.20.35

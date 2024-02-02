@@ -15,12 +15,12 @@
 - name: Include ssh hardening tasks
   ansible.builtin.include_tasks: ssh-hardening.yml
 
-- name: Include DUO Security tasks
-  ansible.builtin.include_tasks: duosecurity.yml
-  when: ansible_facts['distribution'] == 'Ubuntu'
-
 - name: Include Ubunutu tasks
   ansible.builtin.include_tasks: ubuntu.yml
+  when: ansible_facts['distribution'] == 'Ubuntu'
+
+- name: Include DUO Security tasks
+  ansible.builtin.include_tasks: duosecurity.yml
   when: ansible_facts['distribution'] == 'Ubuntu'
 
 - name: Include zshell tasks
@@ -28,6 +28,3 @@
 
 - name: Include config tasks
   ansible.builtin.include_tasks: config.yml
-
-- name: Include cron tasks
-  ansible.builtin.include_tasks: cron.yml

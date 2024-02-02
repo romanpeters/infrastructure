@@ -1,5 +1,17 @@
 ---
 repos:
+  - repo: local
+    hooks:
+      - id: generate-hosts-file
+        name: Generate Hosts File
+        entry: python3 .pre-commit/generate_hosts_file.py
+        language: python
+
+      - id: generate-ssh-config
+        name: Generate SSH Config
+        entry: python3 .pre-commit/generate_ssh_config.py
+        language: python
+
   - repo: https://github.com/ansible-community/ansible-lint.git
     rev: v6.22.2
     hooks:

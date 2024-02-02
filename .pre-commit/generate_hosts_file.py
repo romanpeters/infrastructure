@@ -3,7 +3,7 @@
 import os
 import re
 
-ANSIBLE_INVENTORY_PATH = "inventory.ini"
+ANSIBLE_INVENTORY_PATH = "../inventory/inventory.ini"
 ANSIBLE_HOSTS_FILE_PATH = "roles/base/files/etc/hosts"
 
 
