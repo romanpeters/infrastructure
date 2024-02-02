@@ -19,7 +19,7 @@
 
 - name: Add Docker APT repository
   ansible.builtin.apt_repository:
-    repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_lsb.codename }} stable
+    repo: deb [arch=amd64] https://download.docker.com/linux/{{ absible_distribution }} {{ ansible_lsb.codename }} stable
     state: present
 
 - name: Update package cache again

@@ -1,6 +1,5 @@
 ---
 docker_services:
-  - traefik
   - vaultwarden
 
 vaultwarden_admin_token: !vault |

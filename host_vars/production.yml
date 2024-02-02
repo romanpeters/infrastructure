@@ -4,3 +4,5 @@ docker_services:
   - hello
   - homebox
   - uptime_tan
+
+swarm_host: true
