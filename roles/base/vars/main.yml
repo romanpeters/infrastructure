@@ -4,6 +4,7 @@ base_packages:
   - git
   - acl
   - tmux
+  - tree
   - neofetch
   - lolcat
   - toilet
