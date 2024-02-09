@@ -20,7 +20,7 @@
 
 - name: Copy Docker Compose files
   ansible.builtin.copy:
-    src: "{{ item.src | default(item.name) }}/docker-compose.yml"
+    src: "{{ item.src | default(item.group | default(item.name)) }}/docker-compose.yml"
     dest: /home/{{ username }}/docker/{{ item.group | default(item.name) }}/docker-compose.yml
     owner: "{{ username }}"
     group: "{{ username }}"
