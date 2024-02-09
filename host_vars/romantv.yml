@@ -2,10 +2,10 @@
 docker_services:
   - name: tv
     port: 3838
-    src: romantv
+    group: romantv
   - name: tautulli
     port: 8181
-    src: romantv
+    group: romantv
   - name: request
     port: 5055
-    src: romantv
+    group: romantv
