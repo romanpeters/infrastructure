@@ -1,8 +1,13 @@
 ---
 docker_services:
-  - changedetection
-  - hello
-  - homebox
-  - uptime_tan
-
-swarm_host: true
+  - name: traefik
+    port: 80
+  - name: change
+    port: 3267
+  - name: hello
+    port: 3939
+  - name: homebox
+    port: 7745
+  - name: uptime-tan
+    port: 3001
+    src: uptime

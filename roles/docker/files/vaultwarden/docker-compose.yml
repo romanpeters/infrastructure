@@ -23,4 +23,3 @@ services:
       - '3012:3012'  # websocket
       - '3011:80'
     restart: unless-stopped
-

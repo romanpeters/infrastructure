@@ -8,20 +8,20 @@
 
 - name: Ensure the directory exists
   ansible.builtin.file:
-    path: "/home/{{ username }}/docker/{{ item }}"
+    path: "/home/{{ username }}/docker/{{ item.name }}"
     state: directory
   loop: "{{ docker_services }}"
 
-- name: Find directories in /home/{{ username }}/docker/
-  find:
+- name: Find directories in docker dir
+  ansible.builtin.find:
     paths: "/home/{{ username }}/docker/"
     file_type: directory
   register: existing_docker_services
 
 - name: Copy Docker Compose files
   ansible.builtin.copy:
-    src: "docker/{{ item }}.yml"
-    dest: /home/{{ username }}/docker/{{ item }}/docker-compose.yml
+    src: "{{ item.src | default(item.name) }}/docker-compose.yml"
+    dest: /home/{{ username }}/docker/{{ item.group | default(item.name) }}/docker-compose.yml
     owner: "{{ username }}"
     group: "{{ username }}"
   loop: "{{ docker_services }}"
@@ -36,7 +36,6 @@
 
 - name: Start docker containers
   community.docker.docker_compose:
-    project_src: /home/{{ username }}/docker/{{ item }}
+    project_src: /home/{{ username }}/docker/{{ item.group | default(item.name) }}
     state: present
   loop: "{{ docker_services }}"
-
