@@ -1,4 +1,11 @@
 ---
 docker_services:
-  - traefik
-  - romantv
+  - name: tv
+    port: 3838
+    src: romantv
+  - name: tautulli
+    port: 8181
+    src: romantv
+  - name: request
+    port: 5055
+    src: romantv
