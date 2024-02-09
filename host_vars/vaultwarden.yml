@@ -1,6 +1,7 @@
 ---
 docker_services:
-  - vaultwarden
+    - name: vaultwarden
+      port: 3011
 
 vaultwarden_admin_token: !vault |
           $ANSIBLE_VAULT;1.1;AES256

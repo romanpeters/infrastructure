@@ -1,3 +1,4 @@
 ---
 docker_services:
-  - nginx_proxy_manager
+  - name: nginx
+    port: 80
