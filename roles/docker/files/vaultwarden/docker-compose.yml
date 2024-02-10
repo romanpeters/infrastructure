@@ -2,8 +2,8 @@ version: '3'
 
 services:
   vaultwarden:
-    image: vaultwarden/server:1.30.3
-    container_name: vaultwarden
+    image: vaultwarden/server:1.30.1
+    container_name: '{{ service_name }}'
     environment:
       WEBSOCKET_ENABLED: 'true'
       SIGNUPS_ALLOWED: 'true'
@@ -16,10 +16,10 @@ services:
       - ./data:/data
     ports:
       - '3012:3012'  # websocket
-      - '3011:80'
+      - '{{ service_port }}:80'
     restart: unless-stopped
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.vaultwarden.rule=Host(`vaultwarden.romanpeters.nl`)"
-      - "traefik.http.services.vaultwarden.loadbalancer.server.port=80"
+      - "traefik.http.routers.vaultwarden.rule=Host(`{{ service_name }}.romanpeters.nl`)"
+      - "traefik.http.services.vaultwarden.loadbalancer.server.port={{ service_port }}"
       - "traefik.http.services.vaultwarden.loadbalancer.server.scheme=http"

@@ -4,10 +4,10 @@ version: "3"
 services:
   nginx-proxy-manager:
     image: jc21/nginx-proxy-manager:2.11.1
-    container_name: nginx_proxy_manager
+    container_name: "{{ service_name }}"
     ports:
       - 80:80
-      - 81:81
+      - "{{ service_port }}:81"
       - 443:443
     volumes:
       - ./data:/data
