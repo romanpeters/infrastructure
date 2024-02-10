@@ -2,7 +2,7 @@
 version: "3"
 services:
   url:
-    image: dgtlmoon/changedetection.io:0.45.12
+    image: dgtlmoon/changedetection.io:0.45.14
     container_name: changedetection.io
     environment:
       - BASE_URL=https://change.romanpeters.nl
