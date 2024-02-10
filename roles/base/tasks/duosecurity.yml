@@ -8,7 +8,7 @@
 
     - name: Add Docker APT repository
       ansible.builtin.apt_repository:
-        repo: deb [arch=amd64] https://pkg.duosecurity.com/{{ absible_distribution }} {{ ansible_lsb.codename }} main
+        repo: deb [arch=amd64] https://pkg.duosecurity.com/{{ ansible_distribution }} {{ ansible_lsb.codename }} main
         state: present
 
     - name: Import DUO GPG public key
