@@ -3,16 +3,28 @@ version: "3.8"
 services:
   traefik:
     image: "traefik:v2.10.7"
-    container_name: "{{ servie_name }}"
+    container_name: "{{ service_name }}"
     command:
       - "--api.insecure=true"
       - "--api.dashboard=true"
-      - "--api.debug=true"
+      - "--providers.redis=true"
+      - "--providers.redis.exposedByDefault=false"
       - "--providers.docker=true"
       - "--entrypoints.web.address=:80"
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
     ports:
       - "80:80"
       - "{{ service_port }}:8080"
     restart: unless-stopped
+    labels:
+      - "traefik.http.routers.traefik.rule=Host(`{{ service_name }}.romanpeters.nl`)"
+      - "traefik.http.routers.traefik.entrypoints=web"
+      - "traefik.http.services.traefik.loadbalancer.server.port={{ service_port }}"
+
+
+  redis:
+    image: redis:latest
+    container_name: redis
+    ports:
+      - "6379:6379"
