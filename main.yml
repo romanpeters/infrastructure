@@ -1,7 +1,7 @@
 ---
 - name: Configure Base
   hosts: default
-  strategy: "{{ strategy | default('ansible.builtin.linear') }}"
+  strategy: "{{ ansible_strategy | default('ansible.builtin.linear') }}"
   become: true
   roles:
     - role: base
@@ -9,7 +9,7 @@
 
 - name: Configure Docker
   hosts: docker
-  strategy: "{{ strategy | default('ansible.builtin.linear') }}"
+  strategy: "{{ ansible_strategy | default('ansible.builtin.linear') }}"
   become: true
   roles:
     - role: docker

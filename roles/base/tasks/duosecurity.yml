@@ -6,10 +6,10 @@
         src: usr/sbin/custom_duo_login
         dest: /usr/sbin/custom_duo_login
 
-    - name: Create duosecurity.list file
-      ansible.builtin.copy:
-        content: deb [arch={{ ansible_architecture }}] https://pkg.duosecurity.com/{{ ansible_distribution }} {{ ansible_distribution_release }} main
-        dest: /etc/apt/sources.list.d/duosecurity.list
+    - name: Add Docker APT repository
+      ansible.builtin.apt_repository:
+        repo: deb [arch=amd64] https://pkg.duosecurity.com/{{ absible_distribution }} {{ ansible_lsb.codename }} main
+        state: present
 
     - name: Import DUO GPG public key
       ansible.builtin.apt_key:

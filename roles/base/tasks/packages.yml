@@ -3,27 +3,7 @@
   ansible.builtin.package:
     name: "{{ item }}"
     state: present
-  loop:
-    - vim
-    - neovim
-    - git
-    - acl
-    - tmux
-    - neofetch
-    - lolcat
-    - toilet
-    - cowsay
-    - sl
-    - exa
-    - ripgrep
-    - tldr
-    - command-not-found
-    - trash-cli
-    - btop
-    - bat
-    - duf
-    - python3
-    - python3-pip
+  loop: "{{ base_packages }}"
   ignore_errors: true
 
 - name: Check if it's a VM

@@ -8,20 +8,44 @@
 
 - name: Ensure the directory exists
   ansible.builtin.file:
-    path: "/home/{{ username }}/docker/{{ item }}"
+    path: "/home/{{ username }}/docker/{{ item.group | default(item.name) }}"
     state: directory
   loop: "{{ docker_services }}"
 
+- name: Find directories in docker dir
+  ansible.builtin.find:
+    paths: "/home/{{ username }}/docker/"
+    file_type: directory
+  register: existing_docker_services
+
 - name: Copy Docker Compose files
   ansible.builtin.copy:
-    src: "{{ item }}.yml"
-    dest: /home/{{ username }}/docker/{{ item }}/docker-compose.yml
+    src: "{{ item.src | default(item.group | default(item.name)) }}/docker-compose.yml"
+    dest: /home/{{ username }}/docker/{{ item.group | default(item.name) }}/docker-compose.yml
     owner: "{{ username }}"
     group: "{{ username }}"
   loop: "{{ docker_services }}"
 
-- name: Run Docker Compose
+- name: Stop other containers
   community.docker.docker_compose:
-    project_src: /home/{{ username }}/docker/{{ item }}
+    project_src: "{{ item.path }}"
+    state: absent
+  loop: "{{ existing_docker_services.files }}"
+  when: item.path.split('/') | last not in docker_services
+  ignore_errors: true
+
+- name: Start docker containers
+  community.docker.docker_compose:
+    project_src: /home/{{ username }}/docker/{{ item.group | default(item.name) }}
     state: present
   loop: "{{ docker_services }}"
+  when: item.group is not defined
+
+- name: Start docker container groups
+  community.docker.docker_compose:
+    project_src: /home/{{ username }}/docker/{{ group.0.group }}
+    state: present
+  loop: "{{ your_items_list | groupby('group') }}"
+  loop_control:
+    label: "{{ group.0.group }}"
+  when: group.0.group is defined

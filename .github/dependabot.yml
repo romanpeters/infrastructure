@@ -5,6 +5,6 @@
 version: 2
 updates:
   - package-ecosystem: docker
-    directory: roles/docker/files
+    directory: roles/docker/files/docker
     schedule:
       interval: daily

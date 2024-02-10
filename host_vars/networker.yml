@@ -1,5 +1,8 @@
 ---
 docker_services:
-  - adguard
-  - nginx_proxy_manager
-  - uptime
+  - name: adguard
+    port: 3003
+  - name: nginx
+    port: 80
+  - name: uptime
+    port: 3001

@@ -1,0 +1,27 @@
+base_packages:
+  - vim
+  - neovim
+  - git
+  - acl
+  - tmux
+  - tree
+  - neofetch
+  - lolcat
+  - toilet
+  - cowsay
+  - sl
+  - exa
+  - ripgrep
+  - tldr
+  - command-not-found
+  - trash-cli
+  - btop
+  - bat
+  - duf
+  - python3
+  - python3-pip
+
+base_packages_dev:
+  - ansible
+  - ansible-lint
+  - pre-commit
