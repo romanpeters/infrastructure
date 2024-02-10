@@ -6,8 +6,6 @@
     update: true
   become: true
   become_user: "{{ username }}"
-  register: git_clone_result
-
 
 - name: Move nowplaying to /usr/local/bin
   ansible.builtin.copy:
@@ -15,14 +13,12 @@
     dest: "/usr/local/bin/"
     remote_src: true
   become: true
-  when: git_clone_result.rc == 0
 
 - name: Create nowplaying config
   ansible.builtin.copy:
     src: "/tmp/plex-nowplaying/nowplaying.conf.sample"
     dest: "/home/{{ username }}/.config/nowplaying.conf"
     remote_src: true
-  when: git_clone_result.rc == 0
 
 - name: Set NP_PLEX_HOST in nowplaying.conf
   ansible.builtin.lineinfile:
