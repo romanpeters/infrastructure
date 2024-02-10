@@ -3,14 +3,14 @@ version: "3"
 services:
   url:
     image: dgtlmoon/changedetection.io:0.45.12
-    container_name: changedetection.io
+    container_name: "{{ service_name }}"
     environment:
-      - BASE_URL=https://change.romanpeters.nl
+      - BASE_URL=https://{{ service_name }}.romanpeters.nl
       - PLAYWRIGHT_DRIVER_URL=ws://playwright-chrome:3000/?stealth=1&--disable-web-security=true
     volumes:
       - ./data:/datastore
     ports:
-      - 3267:5000
+      - "{{ port }}:5000"
     depends_on:
       playwright-chrome:
         condition: service_started

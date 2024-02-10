@@ -19,11 +19,14 @@
   register: existing_docker_services
 
 - name: Copy Docker Compose files
-  ansible.builtin.copy:
+  ansible.builtin.template:
     src: "{{ item.src | default(item.group | default(item.name)) }}/docker-compose.yml"
     dest: /home/{{ username }}/docker/{{ item.group | default(item.name) }}/docker-compose.yml
     owner: "{{ username }}"
     group: "{{ username }}"
+  vars:
+    service_name: "{{ item.name }}"
+    service_port: "{{ item.port }}"
   loop: "{{ docker_services }}"
 
 - name: Stop other containers

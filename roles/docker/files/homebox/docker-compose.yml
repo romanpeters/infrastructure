@@ -3,7 +3,7 @@ version: "3.4"
 services:
   homebox:
     image: ghcr.io/hay-kot/homebox:v0.10.3
-    container_name: homebox
+    container_name: "{{ service_name }}"
     environment:
       - HBOX_LOG_LEVEL=info
       - HBOX_LOG_FORMAT=text
@@ -11,5 +11,5 @@ services:
     volumes:
       - ./data/:/data/
     ports:
-      - 7745:7745
+      - "{{ service_port }}:7745"
     restart: always

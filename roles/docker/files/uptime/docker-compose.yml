@@ -4,9 +4,9 @@ version: "3.7"
 services:
   uptime:
     image: louislam/uptime-kuma:1.23.11
-    container_name: uptime
+    container_name: "{{ service_name }}"
     volumes:
       - ./data:/app/data
     ports:
-      - 3001:3001
+      - "{{ service_port }}:3001"
     restart: always

@@ -3,7 +3,7 @@ version: "3.8"
 services:
   traefik:
     image: "traefik:v2.10.7"
-    container_name: "traefik"
+    container_name: "{{ servie_name }}"
     command:
       - "--api.insecure=true"
       - "--api.dashboard=true"
@@ -14,5 +14,5 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     ports:
       - "80:80"
-      - "8080:8080"
+      - "{{ service_port }}:8080"
     restart: unless-stopped
