@@ -1,7 +1,5 @@
 ---
 docker_services:
-  - name: traefik
-    port: 80
   - name: change
     port: 3267
   - name: hello
