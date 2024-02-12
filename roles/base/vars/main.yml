@@ -20,6 +20,7 @@ base_packages:
   - duf
   - python3
   - python3-pip
+  - unattended-upgrades
 
 base_packages_dev:
   - ansible
