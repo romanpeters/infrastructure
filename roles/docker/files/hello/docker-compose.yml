@@ -3,7 +3,7 @@ version: "2.1"
 
 services:
   heimdall:
-    image: linuxserver/heimdall:2.6.0
+    image: linuxserver/heimdall:2.6.1
     container_name: "{{ service_name }}"
     environment:
       - APP_NAME=romanpeters
