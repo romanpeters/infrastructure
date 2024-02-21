@@ -1,0 +1,26 @@
+---
+- name: Install dependencies
+  ansible.builtin.apt:
+    name:
+      - nginx
+
+- name: Copy Nginx files
+  ansible.builtin.template:
+    src: nginx.j2
+    dest: "/etc/nginx/sites-available/{{ item.name }}"
+  vars:
+    service_name: "{{ item.name }}"
+    service_port: "{{ item.port }}"
+  loop: "{{ docker_services }}"
+
+- name: Enable sites
+  ansible.builtin.file:
+    src: "/etc/nginx/sites-available/{{ item.name }}"
+    dest: "/etc/nginx/sites-enabled/{{ item.name }}"
+    state: link
+  loop: "{{ docker_services }}"
+
+- name: Test Nginx configuration
+  ansible.builtin.command: nginx -t
+  changed_when: false
+  notify: Restart nginx
