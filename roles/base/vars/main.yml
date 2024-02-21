@@ -26,3 +26,4 @@ base_packages_dev:
   - ansible
   - ansible-lint
   - pre-commit
+  - ipcalc
