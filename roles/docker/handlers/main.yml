@@ -3,3 +3,9 @@
   ansible.builtin.service:
     name: nginx
     state: restarted
+
+- name: Restart nginx proxy
+  ansible.builtin.service:
+    name: nginx
+    state: restarted
+  delegate_to: "{{ webserver_host }}"
