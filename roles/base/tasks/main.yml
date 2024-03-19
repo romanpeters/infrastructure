@@ -9,6 +9,9 @@
 - name: Include hosts tasks
   ansible.builtin.include_tasks: hosts.yml
 
+- name: Include timezone tasks
+  ansible.builtin.include_tasks: timezone.yml
+
 - name: Include ssh tasks
   ansible.builtin.include_tasks: ssh.yml
 
