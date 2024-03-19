@@ -42,13 +42,3 @@
     project_src: /home/{{ username }}/docker/{{ item.group | default(item.name) }}
     state: present
   loop: "{{ docker_services }}"
-  when: item.group is not defined
-
-- name: Start docker container groups
-  community.docker.docker_compose:
-    project_src: /home/{{ username }}/docker/{{ group.0.group }}
-    state: present
-  loop: "{{ your_items_list | groupby('group') }}"
-  loop_control:
-    label: "{{ group.0.group }}"
-  when: group.0.group is defined

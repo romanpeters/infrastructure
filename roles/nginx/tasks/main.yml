@@ -1,0 +1,12 @@
+---
+- name: Include nginx tasks
+  ansible.builtin.include_tasks: nginx.yml
+  tags: config
+
+- name: Include certbot tasks
+  ansible.builtin.include_tasks: certbot.yml
+  tags: certbot
+
+- name: Include sites tasks
+  ansible.builtin.include_tasks: sites.yml
+  tags: sites

@@ -1,29 +1,9 @@
 ---
 - name: Install dependencies
   ansible.builtin.apt:
+    state: absent
     name:
       - nginx
-
-- name: Copy Nginx files
-  ansible.builtin.template:
-    src: nginx.j2
-    dest: "/etc/nginx/sites-available/{{ item.name }}"
-  vars:
-    service_name: "{{ item.name }}"
-    service_port: "{{ item.port }}"
-  loop: "{{ docker_services }}"
-
-- name: Enable sites
-  ansible.builtin.file:
-    src: "/etc/nginx/sites-available/{{ item.name }}"
-    dest: "/etc/nginx/sites-enabled/{{ item.name }}"
-    state: link
-  loop: "{{ docker_services }}"
-
-- name: Test Nginx configuration
-  ansible.builtin.command: nginx -t
-  changed_when: false
-  notify: Restart nginx
 
 - name: Set IP address for service
   ansible.builtin.set_fact:
@@ -31,25 +11,39 @@
 
 - name: Copy Nginx file to proxy server
   ansible.builtin.template:
-    src: nginx.j2
-    dest: "/etc/nginx/sites-available/{{ item.name }}"
+    src: roles/nginx/templates/nginx.j2
+    dest: "/etc/nginx/sites-available/{{ item.name }}.{{ domain }}"
   vars:
     service_ip: "{{ host_ip }}"
     service_name: "{{ item.name }}"
     service_port: "{{ item.port }}"
+    service_remote: "{{ item.remote | default(false) }}"
   loop: "{{ docker_services }}"
   delegate_to: "{{ webserver_host }}"
 
 - name: Enable sites on proxy server
   ansible.builtin.file:
-    src: "/etc/nginx/sites-available/{{ item.name }}"
-    dest: "/etc/nginx/sites-enabled/{{ item.name }}"
+    src: "/etc/nginx/sites-available/{{ item.name }}.{{ domain }}"
+    dest: "/etc/nginx/sites-enabled/{{ item.name }}.{{ domain }}"
     state: link
+  loop: "{{ docker_services }}"
+  delegate_to: "{{ webserver_host }}"
+
+- name: Add new URL to the list
+  ansible.builtin.set_fact:
+    docker_sites: "{{ docker_sites + ['https://' + item.name + '.' + domain] }}"
+  loop: "{{ docker_services }}"
+
+- name: Add URL to list file
+  ansible.builtin.lineinfile:
+    path: "/var/www/html/{{ domain }}/list.txt"
+    line: "https://{{ item.name }}.{{ domain }}"
+    create: true
   loop: "{{ docker_services }}"
   delegate_to: "{{ webserver_host }}"
 
 - name: Test Nginx configuration
   ansible.builtin.command: nginx -t
   changed_when: false
-  notify: Restart nginx proxy
   delegate_to: "{{ webserver_host }}"
+  notify: Restart nginx proxy

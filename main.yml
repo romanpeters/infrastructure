@@ -7,6 +7,13 @@
     - role: base
       tags: base
 
+- name: Configure nginx host
+  hosts: webserver
+  become: true
+  roles:
+    - role: nginx
+      tags: nginx
+
 - name: Configure Docker
   hosts: docker
   strategy: "{{ ansible_strategy | default('ansible.builtin.linear') }}"
