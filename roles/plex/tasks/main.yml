@@ -1,4 +1,7 @@
 ---
+- name: Include mount tasks
+  ansible.builtin.include_tasks: mount.yml
+
 - name: Include plexmediaserver tasks
   ansible.builtin.include_tasks: plexmediaserver.yml
 

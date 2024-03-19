@@ -1,0 +1,15 @@
+---
+- name: Add media_share entry to /etc/fstab
+  lineinfile:
+    path: /etc/fstab
+    line: "{{ media_share.src }} {{ media_share.dest }} nfs {{ media_share.options }} 0 0"
+    state: present
+    create: yes
+
+- name: Mount NFS filesystem
+  ansible.builtin.mount:
+    src: "{{ media_share.src }}"
+    path: "{{ media_share.dest }}"
+    fstype: nfs
+    opts: "{{ media_share.options }}"
+    state: mounted
