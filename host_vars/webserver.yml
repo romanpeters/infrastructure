@@ -43,3 +43,9 @@ reverse_proxy:
   - name: ansible
     ip: 10.10.20.35
     ssl: true
+
+  # temporary
+  - name: books
+    ip: 10.10.20.20
+    port: 13378
+    remote: true

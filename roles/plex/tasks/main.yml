@@ -1,0 +1,6 @@
+---
+- name: Include plexmediaserver tasks
+  ansible.builtin.include_tasks: plexmediaserver.yml
+
+- name: Include nowplaying tasks
+  ansible.builtin.include_tasks: nowplaying.yml
