@@ -11,7 +11,7 @@
 
 - name: Copy Nginx file to proxy server
   ansible.builtin.template:
-    src: roles/nginx/templates/nginx.j2
+    src: nginx.j2
     dest: "/etc/nginx/sites-available/{{ item.name }}.{{ domain }}"
   vars:
     service_ip: "{{ host_ip }}"
@@ -45,5 +45,5 @@
 - name: Test Nginx configuration
   ansible.builtin.command: nginx -t
   changed_when: false
-  delegate_to: "{{ webserver_host }}"
   notify: Restart nginx proxy
+  delegate_to: "{{ webserver_host }}"
