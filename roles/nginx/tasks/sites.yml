@@ -1,0 +1,77 @@
+---
+- name: Create directory
+  ansible.builtin.file:
+    path: "/var/www/html/{{ domain }}"
+    state: directory
+    mode: '0755'
+    owner: www-data
+    group: www-data
+
+- name: Copy files site
+  ansible.builtin.copy:
+    src: "files/var/www/html/{{ domain }}/{{ item }}"
+    dest: "/var/www/html/{{ domain }}/{{ item }}"
+    owner: www-data
+    group: www-data
+    mode: "0644"
+  loop:
+    - "404.html"
+    - "styles.css"
+
+- name: Copy default site
+  ansible.builtin.copy:
+    src: "files/etc/nginx/sites-available/00-default"
+    dest: "/etc/nginx/sites-available/00-{{ domain }}"
+
+- name: Enable default site
+  ansible.builtin.file:
+    src: "/etc/nginx/sites-available/00-{{ domain }}"
+    dest: "/etc/nginx/sites-enabled/00-{{ domain }}"
+    state: link
+
+- name: Copy Nginx file to proxy server
+  ansible.builtin.template:
+    src: nginx.j2
+    dest: "/etc/nginx/sites-available/{{ item.name }}.{{ domain }}"
+  vars:
+    service_ip: "{{ item.ip }}"
+    service_name: "{{ item.name }}"
+    service_port: "{{ item.port if item.port is defined else (443 if item.ssl | default(false) else 80) }}"
+    service_ssl: "{{ item.ssl | default(false) }}"
+    service_remote: "{{ item.remote | default(false) }}"
+  loop: "{{ reverse_proxy }}"
+
+- name: Enable sites on proxy server
+  ansible.builtin.file:
+    src: "/etc/nginx/sites-available/{{ item.name }}.{{ domain }}"
+    dest: "/etc/nginx/sites-enabled/{{ item.name }}.{{ domain }}"
+    state: link
+  loop: "{{ reverse_proxy }}"
+
+- name: Delete file
+  ansible.builtin.file:
+    path: "/var/www/html/{{ domain }}/list"
+    state: absent
+
+- name: Add URL to list file
+  ansible.builtin.lineinfile:
+    path: "/var/www/html/{{ domain }}/list.txt"
+    line: "https://{{ item.name }}.{{ domain }}"
+    create: true
+  loop: "{{ reverse_proxy }}"
+
+- name: Set ownership of list file
+  ansible.builtin.file:
+    path: /var/www/html/{{ domain }}/list.txt
+    owner: www-data
+    group: www-data
+    state: file
+
+- name: Test Nginx configuration
+  ansible.builtin.command: nginx -t
+  changed_when: false
+
+- name: Restart nginx proxy
+  ansible.builtin.service:
+    name: nginx
+    state: restarted

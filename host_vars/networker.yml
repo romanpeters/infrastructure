@@ -1,6 +1,6 @@
 ---
+ip_adress: "10.10.10.100"
+
 docker_services:
-  - name: adguard
-    port: 3003
   - name: uptime
     port: 3001

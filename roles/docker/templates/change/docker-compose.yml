@@ -10,7 +10,7 @@ services:
     volumes:
       - ./data:/datastore
     ports:
-      - "{{ port }}:5000"
+      - "{{ service_port }}:5000"
     depends_on:
       playwright-chrome:
         condition: service_started

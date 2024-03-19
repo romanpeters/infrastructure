@@ -6,3 +6,7 @@
 - name: Include docker compose tasks
   ansible.builtin.include_tasks: compose.yml
   when: docker_services is defined
+
+- name: Include nginx tasks
+  ansible.builtin.include_tasks: nginx.yml
+  when: docker_services is defined

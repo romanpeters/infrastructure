@@ -1,4 +1,6 @@
 ---
+ip_address: "10.10.10.105"
+
 docker_services:
     - name: vaultwarden
       port: 3011
