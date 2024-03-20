@@ -49,3 +49,5 @@ reverse_proxy:
     ip: 10.10.20.20
     port: 13378
     remote: true
+  - name: git
+    ip: 10.10.10.106

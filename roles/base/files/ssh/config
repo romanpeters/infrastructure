@@ -7,6 +7,9 @@ Host networker
 Host vaultwarden
     Hostname 10.10.10.105
 
+Host gitlab
+    Hostname 10.10.10.106
+
 Host jenkins
     Hostname 10.10.10.108
 

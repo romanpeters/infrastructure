@@ -10,6 +10,7 @@
 - name: Configure plex host
   hosts: plex
   become: true
+  gather_facts: false
   roles:
     - role: plex
       tags: plex
@@ -17,6 +18,7 @@
 - name: Configure nginx host
   hosts: webserver
   become: true
+  gather_facts: false
   roles:
     - role: nginx
       tags: nginx
@@ -25,13 +27,26 @@
   hosts: docker
   strategy: "{{ ansible_strategy | default('ansible.builtin.linear') }}"
   become: true
+  gather_facts: false
   roles:
     - role: docker
       tags: docker
 
 - name: Configure rhel host
   hosts: rhel
+  gather_facts: false
   tasks:
     - name: Include reboot-router cron tasks
       ansible.builtin.import_tasks:
         file: tasks/reboot-router-cron.yml
+      tags: rhel
+
+- name: Configure gitlab host
+  hosts: gitlab
+  become: true
+  gather_facts: false
+  tasks:
+    - name: Include gitlab tasks
+      ansible.builtin.import_tasks:
+        file: tasks/gitlab.yml
+      tags: gitlab

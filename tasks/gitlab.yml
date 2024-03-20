@@ -1,0 +1,23 @@
+---
+- name: Install necessary dependencies
+  apt:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - curl
+    - openssh-server
+    - ca-certificates
+    - tzdata
+    - perl
+
+- name: Add GitLab package repository
+  shell: curl https://packages.gitlab.com/install/repositories/gitlab/gitlab-ee/script.deb.sh | sudo bash
+
+- name: Set EXTERNAL_URL
+  ansible.builtin.set_fact:
+    EXTERNAL_URL: "http://git.{{ domain }}"
+
+- name: Install GitLab package
+  ansible.builtin.apt:
+    name: gitlab-ee
+    state: present
