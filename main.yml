@@ -1,9 +1,4 @@
 ---
-- name: Include vault vars
-  include_vars:
-    file: roles/vault/group_vars/all.yml
-    name: vault
-
 - name: Configure Base
   hosts: default
   strategy: "{{ ansible_strategy | default('ansible.builtin.linear') }}"
@@ -15,6 +10,8 @@
 - name: Configure plex host
   hosts: plex
   become: true
+  vars_files:
+    - roles/vault/default/main.yml
   roles:
     - role: plex
       tags: plex
