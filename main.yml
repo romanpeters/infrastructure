@@ -1,4 +1,9 @@
 ---
+- name: Include vault vars
+  include_vars:
+    file: roles/vault/group_vars/all.yml
+    name: vault
+
 - name: Configure Base
   hosts: default
   strategy: "{{ ansible_strategy | default('ansible.builtin.linear') }}"
@@ -6,6 +11,13 @@
   roles:
     - role: base
       tags: base
+
+- name: Configure plex host
+  hosts: plex
+  become: true
+  roles:
+    - role: plex
+      tags: plex
 
 - name: Configure nginx host
   hosts: webserver
@@ -28,10 +40,13 @@
     - name: Include reboot-router cron tasks
       ansible.builtin.import_tasks:
         file: tasks/reboot-router-cron.yml
+      tags: rhel
 
-- name: Configure plex host
-  hosts: plex
+- name: Configure gitlab host
+  hosts: gitlab
+  become: true
   tasks:
-    - name: Include nowplaying tasks
+    - name: Include gitlab tasks
       ansible.builtin.import_tasks:
-        file: tasks/nowplaying.yml
+        file: tasks/gitlab.yml
+      tags: gitlab

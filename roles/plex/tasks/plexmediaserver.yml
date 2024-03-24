@@ -1,0 +1,25 @@
+---
+- name: Add Plex repository
+  ansible.builtin.apt_repository:
+    repo: "deb https://downloads.plex.tv/repo/deb public main"
+    state: present
+
+- name: Import Plex signing key
+  ansible.builtin.apt_key:
+    keyring: /etc/apt/trusted.gpg.d/plexmediaserver.gpg
+    url: "https://downloads.plex.tv/plex-keys/PlexSign.key"
+
+- name: Update package index
+  ansible.builtin.apt:
+    update_cache: true
+
+- name: Install specific version of Plex Media Server
+  ansible.builtin.apt:
+    name: plexmediaserver={{ plex_version }}
+    state: present
+
+- name: Start Plex Media Server service
+  ansible.builtin.service:
+    name: plexmediaserver
+    state: started
+    enabled: true

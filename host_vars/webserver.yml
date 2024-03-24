@@ -5,6 +5,16 @@ docker_services:
   - name: adguard
     port: 3003
 
+  - name: management
+    src: homer
+    port: 3004
+    links:
+      - proxmox
+      - proxmox-backup
+      - jenkins
+      - ansible
+      - git
+
 reverse_proxy:
   - name: router
     ip: 10.10.1.254
@@ -43,3 +53,11 @@ reverse_proxy:
   - name: ansible
     ip: 10.10.20.35
     ssl: true
+
+  # temporary
+  - name: books
+    ip: 10.10.20.20
+    port: 13378
+    remote: true
+  - name: git
+    ip: 10.10.10.106

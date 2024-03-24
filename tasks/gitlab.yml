@@ -1,0 +1,29 @@
+---
+- name: Install necessary dependencies
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - curl
+    - openssh-server
+    - ca-certificates
+    - tzdata
+    - perl
+
+- name: Add GitLab package repository
+  ansible.builtin.get_url:
+    url: https://packages.gitlab.com/install/repositories/gitlab/gitlab-ee/script.deb.sh
+    dest: /tmp/script.deb.sh
+    mode: 'u+x'
+  register: script_download
+
+- name: Execute the downloaded script
+  ansible.builtin.script: /tmp/script.deb.sh
+  args:
+    executable: /bin/bash
+  changed_when: script_download.changed
+
+- name: Install GitLab package
+  ansible.builtin.apt:
+    name: gitlab-ee
+    state: present
