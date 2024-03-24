@@ -1,6 +1,6 @@
 ---
 - name: Install necessary dependencies
-  apt:
+  ansible.builtin.apt:
     name: "{{ item }}"
     state: present
   loop:
@@ -11,11 +11,17 @@
     - perl
 
 - name: Add GitLab package repository
-  shell: curl https://packages.gitlab.com/install/repositories/gitlab/gitlab-ee/script.deb.sh | sudo bash
+  ansible.builtin.get_url:
+    url: https://packages.gitlab.com/install/repositories/gitlab/gitlab-ee/script.deb.sh
+    dest: /tmp/script.deb.sh
+    mode: 'u+x'
+  register: script_download
 
-- name: Set EXTERNAL_URL
-  ansible.builtin.set_fact:
-    EXTERNAL_URL: "http://git.{{ domain }}"
+- name: Execute the downloaded script
+  ansible.builtin.script: /tmp/script.deb.sh
+  args:
+    executable: /bin/bash
+  changed_when: script_download.changed
 
 - name: Install GitLab package
   ansible.builtin.apt:

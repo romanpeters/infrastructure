@@ -28,4 +28,4 @@ base_packages_dev:
   - pre-commit
   - ipcalc
 
-timezone: "Europe/Amsterdam"
+base_timezone: "Europe/Amsterdam"

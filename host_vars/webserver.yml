@@ -4,6 +4,15 @@ ip_adress: "10.10.20.10"
 docker_services:
   - name: adguard
     port: 3003
+  - name: management
+    src: homer
+    port: 3004
+    links:
+      - proxmox
+      - proxmox-backup
+      - jenkins
+      - ansible
+      - git
 
 reverse_proxy:
   - name: router

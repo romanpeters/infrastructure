@@ -1,8 +1,7 @@
 ---
 plex_version: 1.40.1.8227-c0dd5a73e
 plex_token: plex_token
-media_share:
+plex_media_share:
   src: "10.10.10.99:/volume1/media"
   dest: "/mnt/media"
   options: "rw,hard,intr,rsize=131072,wsize=131072,timeo=30,retrans=10"
-
