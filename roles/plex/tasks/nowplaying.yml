@@ -12,6 +12,7 @@
     src: "/tmp/plex-nowplaying/nowplaying"
     dest: "/usr/local/bin/"
     remote_src: true
+    mode: "0755"
   become: true
 
 - name: Create nowplaying config
