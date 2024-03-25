@@ -19,7 +19,7 @@
     service_port: "{{ item.port }}"
     service_remote: "{{ item.remote | default(false) }}"
   loop: "{{ docker_services }}"
-  delegate_to: "{{ webserver_host }}"
+  delegate_to: webserver
 
 - name: Enable sites on proxy server
   ansible.builtin.file:
@@ -27,7 +27,7 @@
     dest: "/etc/nginx/sites-enabled/{{ item.name }}.{{ domain }}"
     state: link
   loop: "{{ docker_services }}"
-  delegate_to: "{{ webserver_host }}"
+  delegate_to: webserver
 
 - name: Add new URL to the list
   ansible.builtin.set_fact:
@@ -40,10 +40,10 @@
     line: "https://{{ item.name }}.{{ domain }}"
     create: true
   loop: "{{ docker_services }}"
-  delegate_to: "{{ webserver_host }}"
+  delegate_to: webserver
 
 - name: Test Nginx configuration
   ansible.builtin.command: nginx -t
   changed_when: false
   notify: Restart nginx proxy
-  delegate_to: "{{ webserver_host }}"
+  delegate_to: webserver
