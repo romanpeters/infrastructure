@@ -27,5 +27,3 @@ base_packages_dev:
   - ansible-lint
   - pre-commit
   - ipcalc
-
-base_timezone: "Europe/Amsterdam"

@@ -1,6 +1,5 @@
 ---
 plex_version: 1.40.1.8227-c0dd5a73e
-plex_token: plex_token
 plex_media_share:
   src: "10.10.10.99:/volume1/media"
   dest: "/mnt/media"
