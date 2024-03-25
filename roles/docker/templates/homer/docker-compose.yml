@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  homer:
+    image: b4bz/homer
+    container_name: "{{ service_name }}"
+    volumes:
+      - ./assets/:/www/assets
+    ports:
+      - "{{ service_port }}:8080"
+    user: 1000:1000
+    environment:
+      - INIT_ASSETS=0
+      - IPV6_DISABLE=1

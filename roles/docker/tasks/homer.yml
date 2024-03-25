@@ -1,0 +1,44 @@
+---
+- name: Ensure Python dependencies
+  ansible.builtin.pip:
+    name:
+      - requests
+      - docker==6.1.3
+      - docker-compose
+
+- name: Ensure the directory exists
+  ansible.builtin.file:
+    path: "/home/{{ username }}/docker/{{ item.group | default(item.name) }}"
+    state: directory
+  loop: "{{ docker_services }}"
+
+- name: Find directories in docker dir
+  ansible.builtin.find:
+    paths: "/home/{{ username }}/docker/"
+    file_type: directory
+  register: existing_docker_services
+
+- name: Copy Docker Compose files
+  ansible.builtin.template:
+    src: "{{ item.src | default(item.group | default(item.name)) }}/docker-compose.yml"
+    dest: /home/{{ username }}/docker/{{ item.group | default(item.name) }}/docker-compose.yml
+    owner: "{{ username }}"
+    group: "{{ username }}"
+  vars:
+    service_name: "{{ item.name }}"
+    service_port: "{{ item.port }}"
+  loop: "{{ docker_services }}"
+
+- name: Stop other containers
+  community.docker.docker_compose:
+    project_src: "{{ item.path }}"
+    state: absent
+  loop: "{{ existing_docker_services.files }}"
+  when: item.path.split('/') | last not in docker_services
+  ignore_errors: true
+
+- name: Start docker containers
+  community.docker.docker_compose:
+    project_src: /home/{{ username }}/docker/{{ item.group | default(item.name) }}
+    state: present
+  loop: "{{ docker_services }}"
