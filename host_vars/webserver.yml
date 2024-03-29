@@ -4,16 +4,9 @@ ip_adress: "10.10.20.10"
 docker_services:
   - name: adguard
     port: 3003
-
   - name: management
     src: homer
     port: 3004
-    links:
-      - proxmox
-      - proxmox-backup
-      - jenkins
-      - ansible
-      - git
 
 reverse_proxy:
   - name: router
@@ -61,3 +54,27 @@ reverse_proxy:
     remote: true
   - name: git
     ip: 10.10.10.106
+
+homer_services:
+  management:
+    - name: "Application"
+      icon: "fas fa-code-branch"
+      # A path to an image can also be provided. Note that icon take precedence if both icon and logo are set.
+      # logo: "path/to/logo"
+      items:
+        - name: "Awesome app"
+          logo: "assets/tools/sample.png"
+          subtitle: "Bookmark example"
+          tag: "app"
+          keywords: "self hosted reddit" # optional keyword used for searching purpose
+          url: "https://www.reddit.com/r/selfhosted/"
+          target: "_blank" # optional html tag target attribute
+        - name: "Another one"
+          logo: "assets/tools/sample2.png"
+          subtitle: "Another application"
+          tag: "app"
+          # Optional tagstyle
+          tagstyle: "is-success"
+          url: "#"
+
+

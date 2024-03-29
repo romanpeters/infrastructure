@@ -13,3 +13,6 @@ docker_services:
     port: 3001
     src: uptime
     remote: true
+  - name: library
+    port: 8083
+    src: calibre
