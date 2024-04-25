@@ -3,7 +3,7 @@ version: "3.7"
 
 services:
   uptime:
-    image: louislam/uptime-kuma:1.23.12
+    image: louislam/uptime-kuma:1.23.13
     container_name: "{{ service_name }}"
     volumes:
       - ./data:/app/data
