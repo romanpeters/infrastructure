@@ -49,6 +49,8 @@ reverse_proxy:
 
   # temporary
   - name: books
+    alias:
+      - audiobooks
     ip: 10.10.20.20
     port: 13378
     remote: true
@@ -76,5 +78,3 @@ homer_services:
           # Optional tagstyle
           tagstyle: "is-success"
           url: "#"
-
-

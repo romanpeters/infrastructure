@@ -46,11 +46,11 @@ Host romantv
 Host production
     Hostname 10.10.20.25
 
-Host #kubernetes
-    Hostname 10.10.20.28
-
 Host gpu
     Hostname 10.10.20.30
 
 Host rhel
     Hostname 10.10.20.35
+
+Host #media
+    Hostname 10.10.20.45
