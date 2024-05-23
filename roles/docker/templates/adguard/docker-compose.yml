@@ -3,7 +3,7 @@ version: "3"
 
 services:
   adguardhome:
-    image: adguard/adguardhome:v0.107.49
+    image: adguard/adguardhome:v0.107.50
     container_name: "{{ service_name }}"
     ports:
       - 53:53/udp
