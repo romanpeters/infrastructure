@@ -10,3 +10,7 @@
 - name: Include nginx tasks
   ansible.builtin.include_tasks: nginx.yml
   when: docker_services is defined
+
+- name: Include homer tasks
+  ansible.builtin.include_tasks: homer.yml
+  when: docker_services is defined

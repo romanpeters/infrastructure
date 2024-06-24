@@ -28,10 +28,15 @@
 - name: Include mount tasks
   ansible.builtin.include_tasks: mount.yml
   when: mount_media is defined and mount_media
-  tags: test
+
+- name: Include thunderbolt tasks
+  ansible.builtin.include_tasks: thunderbolt.yml
+  when: inventory_hostname == "proxmox"
 
 - name: Include zshell tasks
   ansible.builtin.include_tasks: shell.yml
 
 - name: Include config tasks
   ansible.builtin.include_tasks: config.yml
+
+  

@@ -6,12 +6,12 @@ services:
     environment:
       - PUID=1080
       - PGID=1080
-      - TZ=Etc/UTC
+      - TZ=Europe/Amsterdam
       - DOCKER_MODS=linuxserver/mods:universal-calibre
       - OAUTHLIB_RELAX_TOKEN_SCOPE=1
     volumes:
       - ./config:/config
-      - ./books:/books
+      - /mnt/media/books/ebooks:/books
     ports:
       - {{ service_port }}:8083
     restart: always

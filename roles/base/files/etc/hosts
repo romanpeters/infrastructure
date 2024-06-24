@@ -1,10 +1,10 @@
 10.10.1.254	router
 10.10.10.100	networker
 10.10.10.105	vaultwarden
-10.10.10.106	gitlab
+10.10.10.106	#gitlab
 10.10.10.108	jenkins
 10.10.10.111	hass
-10.10.10.248	octopi
+10.10.10.248	#octopi
 10.10.10.249	pbs
 10.10.10.250	proxmox
 10.10.10.254	udmp

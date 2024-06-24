@@ -1,0 +1,50 @@
+---
+- name: Create directory if it doesn't exist
+  file:
+    path: /home/{{ username }}/docker/homer
+    state: directory
+    owner: "{{ username }}"
+    group: "{{ username }}"
+    mode: '0755'
+
+- name: Copy docker-compose.yml to server
+  copy:
+    src: files/homer/docker-compose.yml
+    dest: /home/{{ username }}/docker/homer/docker-compose.yml
+    owner: "{{ username }}"
+    group: "{{ username }}"
+    mode: '0644'
+
+- name: Start homer containers
+  community.docker.docker_compose_v2:
+    project_src: /home/{{ username }}/docker/homer
+    state: present
+
+- name: Copy config.yml to /home/{{ username }}/docker/homer/assets/
+  copy:
+    src: files/homer/config.yml
+    dest: /home/{{ username }}/docker/homer/assets/config.yml
+    owner: "{{ username }}"
+    group: "{{ username }}"
+    mode: '0644'
+  notify: restart homer
+
+- name: Copy Nginx file to webserver
+  ansible.builtin.template:
+    src: nginx.j2
+    dest: /etc/nginx/sites-available/ai.{{ domain }}
+  vars:
+    service_ip: "{{ ansible_host }}"
+    service_name: ai
+    service_alias: []
+    service_port: 80
+    service_remote: false
+  delegate_to: webserver
+
+- name: Create symlink to enable the config
+  file:
+    src: /etc/nginx/sites-available/ai.{{ domain }}
+    dest: /etc/nginx/sites-enabled/ai.{{ domain }}
+    state: link
+  delegate_to: webserver
+  notify: test nginx configuration

@@ -1,0 +1,91 @@
+---
+- name: Set dynamic variables
+  ansible.builtin.set_fact:
+    service_name: fooocus
+    service_port: 7865
+
+- name: Clone Fooocus repository
+  ansible.builtin.git:
+    repo: https://github.com/lllyasviel/Fooocus.git
+    dest: /opt/ai/fooocus
+    update: no
+    force: yes
+
+- name: Check if /opt/ai/fooocus/models is a symlink
+  ansible.builtin.stat:
+    path: /opt/ai/fooocus/models
+    follow: false
+  register: models_stat
+
+- name: Remove /opt/ai/fooocus/models if it exists and is not a symlink
+  ansible.builtin.file:
+    path: /opt/ai/fooocus/models
+    state: absent
+  when: models_stat.stat.exists and not models_stat.stat.islnk
+
+- name: Create /models/fooocus directory
+  file:
+    path: /models/fooocus
+    state: directory
+
+- name: Create symlink /opt/ai/fooocus/models to /models/fooocus
+  ansible.builtin.file:
+    src: /models/fooocus
+    dest: /opt/ai/fooocus/models
+    state: link
+  when: not models_stat.stat.exists or not models_stat.stat.islnk
+
+- name: Set up Python virtual environment
+  command:
+    cmd: python3 -m venv /opt/ai/fooocus/fooocus_env
+    creates: /opt/ai/fooocus/fooocus_env/bin/activate
+
+- name: Activate virtual environment
+  shell:
+    cmd: source /opt/ai/fooocus/fooocus_env/bin/activate
+    executable: /bin/bash
+
+- name: Install Python dependencies from requirements_versions.txt
+  pip:
+    requirements: /opt/ai/fooocus/requirements_versions.txt
+    executable: /opt/ai/fooocus/fooocus_env/bin/pip
+
+- name: Copy systemd unit file
+  copy:
+    src: "{{ item }}"
+    dest: "/{{ item }}"
+    mode: 0644
+  notify:
+    - reload systemd
+    - start fooocus
+  loop:
+    - "etc/systemd/system/fooocus.service"
+
+- name: Insert Homer configuration block into config.yml
+  lineinfile:
+    path: /home/{{ username }}/docker/homer/assets/config.yml
+    insertafter: '^items:$'
+    line: "{{ lookup('template', 'templates/homer_item.yml.j2') }}"
+  notify: restart homer
+
+- name: Copy Nginx file to webserver
+  ansible.builtin.template:
+    src: nginx.j2
+    dest: /etc/nginx/sites-available/fooocus.{{ domain }}
+  vars:
+    service_ip: "{{ ansible_host }}"
+    service_name: fooocus
+    service_alias: []
+    service_port: 7865
+    service_remote: false
+  delegate_to: webserver
+
+- name: Create symlink to enable the config
+  file:
+    src: /etc/nginx/sites-available/fooocus.{{ domain }}
+    dest: /etc/nginx/sites-enabled/fooocus.{{ domain }}
+    state: link
+  delegate_to: webserver
+  notify: test nginx configuration
+
+

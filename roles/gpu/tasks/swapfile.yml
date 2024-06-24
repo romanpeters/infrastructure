@@ -1,0 +1,32 @@
+---
+- name: Check if swapfile exists
+  stat:
+    path: /swapfile
+  register: swapfile_stat
+
+- name: Create swapfile if it doesn't exist
+  command: fallocate -l 16G /swapfile
+  when: not swapfile_stat.stat.exists
+
+- name: Set permissions on swapfile
+  file:
+    path: /swapfile
+    mode: '0600'
+  when: not swapfile_stat.stat.exists
+
+- name: Make swap space
+  command: mkswap /swapfile
+  when: not swapfile_stat.stat.exists
+
+- name: Enable swapfile
+  command: swapon /swapfile
+  when: not swapfile_stat.stat.exists
+
+- name: Add swapfile to fstab
+  ansible.builtin.lineinfile:
+    path: /etc/fstab
+    line: '/swapfile none swap sw 0 0'
+  when: not swapfile_stat.stat.exists
+
+- name: Ensure swap is active
+  ansible.builtin.command: swapon --show

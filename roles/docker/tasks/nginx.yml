@@ -16,6 +16,7 @@
   vars:
     service_ip: "{{ host_ip }}"
     service_name: "{{ item.name }}"
+    service_alias: "{{ item.alias | default([]) }}"
     service_port: "{{ item.port }}"
     service_remote: "{{ item.remote | default(false) }}"
   loop: "{{ docker_services }}"

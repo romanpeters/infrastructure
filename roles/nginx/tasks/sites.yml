@@ -15,6 +15,7 @@
     group: www-data
     mode: "0644"
   loop:
+    - "403.html"
     - "404.html"
     - "styles.css"
 
@@ -36,6 +37,7 @@
   vars:
     service_ip: "{{ item.ip }}"
     service_name: "{{ item.name }}"
+    servcie_alias: "{{ item.alias | default([]) }}"
     service_port: "{{ item.port if item.port is defined else (443 if item.ssl | default(false) else 80) }}"
     service_ssl: "{{ item.ssl | default(false) }}"
     service_remote: "{{ item.remote | default(false) }}"

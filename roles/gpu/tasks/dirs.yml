@@ -1,0 +1,23 @@
+---
+- name: Check if /models directory exists
+  stat:
+    path: /models
+  register: dir_check
+
+- name: Fail if /models directory does not exist
+  assert:
+    that:
+      - dir_check.stat.exists
+    fail_msg: "/models directory does not exist"
+
+- name: Create /opt/ai directory
+  file:
+    path: /opt/ai
+    state: directory
+
+- name: Create symlink for /opt/ai to romanpeters's home directory
+  become: true
+  file:
+    src: /opt/ai
+    dest: /home/romanpeters/ai
+    state: link

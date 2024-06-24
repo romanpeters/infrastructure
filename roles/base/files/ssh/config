@@ -7,7 +7,7 @@ Host networker
 Host vaultwarden
     Hostname 10.10.10.105
 
-Host gitlab
+Host #gitlab
     Hostname 10.10.10.106
 
 Host jenkins
@@ -16,7 +16,7 @@ Host jenkins
 Host hass
     Hostname 10.10.10.111
 
-Host octopi
+Host #octopi
     Hostname 10.10.10.248
 
 Host pbs

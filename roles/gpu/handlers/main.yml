@@ -1,0 +1,28 @@
+- name: test nginx configuration
+  ansible.builtin.command: nginx -t
+  delegate_to: webserver
+  notify: reload nginx
+
+- name: reload nginx
+  ansible.builtin.service:
+    name: nginx
+    state: reloaded
+  delegate_to: webserver
+
+- name: restart homer
+  docker_container:
+    name: homer
+    image: b4bz/homer
+    state: present
+    restart: true
+
+- name: reload systemd
+  systemd:
+    state: reloaded
+    daemon_reload: yes
+
+- name: start fooocus
+  systemd:
+    name: fooocus
+    state: started
+    enabled: yes

@@ -42,3 +42,22 @@
     name: docker
     state: started
     enabled: true
+
+- name: Ensure Python dependencies
+  ansible.builtin.package:
+    name:
+      - python3-requests
+      - python3-docker
+      - docker-compose
+
+- name: Ensure docker directory exists
+  file:
+    path: "/home/{{ username }}/docker"
+    state: directory
+
+- name: Configure sudoers file to prevent deletion of ~/docker
+  lineinfile:
+    dest: /etc/sudoers.d/prevent_rm_docker
+    line: "%sudo ALL=(ALL) /usr/bin/rm -r --ignore-fail-on-non-empty --exclude=$HOME/docker/*"
+    create: yes
+

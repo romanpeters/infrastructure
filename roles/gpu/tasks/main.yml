@@ -1,0 +1,15 @@
+---
+- name: Include nvidia tasks
+  ansible.builtin.include_tasks: nvidia.yml
+
+- name: Include swapfile tasks
+  ansible.builtin.include_tasks: swapfile.yml
+
+- name: Include dirs tasks
+  ansible.builtin.include_tasks: dirs.yml
+
+- name: Include homer
+  ansible.builtin.include_tasks: homer.yml
+
+- name: Include fooocus
+  ansible.builtin.include_tasks: fooocus.yml

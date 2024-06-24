@@ -10,9 +10,10 @@ subtitle: "Home Server"
 header: false
 footer: false
 
-links: "{{ docker_homer_links }}"
+links: 
+{{ docker_homer_links | to_yaml }}
 
 services:
-  - name: "Applications"
-    icon: "fas fa-cloud"
-    items: "{{ homer_apps }}"
+{% for item in homer_services[homer_instance] %}
+  {{ item | to_yaml }}
+{% endfor %}

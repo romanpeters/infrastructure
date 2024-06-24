@@ -21,6 +21,7 @@ base_packages:
   - python3
   - python3-pip
   - unattended-upgrades
+#  - topgrade
 
 base_packages_dev:
   - ansible
