@@ -3,7 +3,7 @@ version: "3"
 
 services:
   nginx-proxy-manager:
-    image: jc21/nginx-proxy-manager:2.11.2
+    image: jc21/nginx-proxy-manager:2.11.3
     container_name: "{{ service_name }}"
     ports:
       - 80:80
