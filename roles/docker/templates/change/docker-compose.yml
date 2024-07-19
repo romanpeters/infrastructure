@@ -2,7 +2,7 @@
 version: "3"
 services:
   url:
-    image: dgtlmoon/changedetection.io:0.46.00
+    image: dgtlmoon/changedetection.io:0.46.01
     container_name: "{{ service_name }}"
     environment:
       - BASE_URL=https://{{ service_name }}.romanpeters.nl
