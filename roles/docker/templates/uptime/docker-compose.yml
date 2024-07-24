@@ -1,6 +1,4 @@
 ---
-version: "3.7"
-
 services:
   uptime:
     image: louislam/uptime-kuma:1.23.11

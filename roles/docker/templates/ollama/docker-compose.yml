@@ -1,0 +1,16 @@
+---
+services:
+  ollama:
+    image: ollama/ollama
+    container_name: "{{ service_name }}"
+    ports:
+      - "{{ service_port }}:11434"
+    volumes:
+      - /models/ollama:/root/.ollama/models
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
