@@ -1,0 +1,46 @@
+---
+- name: Include nvidia tasks
+  ansible.builtin.include_tasks: nvidia.yml
+
+- name: Include swapfile tasks
+  ansible.builtin.include_tasks: swapfile.yml
+
+- name: Include dirs tasks
+  ansible.builtin.include_tasks: dirs.yml
+
+- name: Append homer_group template to config.yml
+  ansible.builtin.blockinfile:
+    state: present
+    insertafter: EOF
+    marker: "# {mark} ANSIBLE MANAGED BLOCK {{ service_group }}"
+    path: /home/{{ username }}/docker/ai/assets/config.yml
+    block: "{{ lookup('template', 'templates/homer/group.yml.j2') }}"
+  vars:
+    service_group: Diffusion
+
+- name: Include whisper
+  ansible.builtin.include_tasks: whisper.yml 
+
+- name: Include fooocus
+  ansible.builtin.include_tasks: fooocus.yml
+
+- name: Include automatic1111
+  ansible.builtin.include_tasks: automatic1111.yml
+
+- name: Append homer_group template to config.yml
+  ansible.builtin.blockinfile:
+    state: present
+    insertafter: EOF
+    marker: "# {mark} ANSIBLE MANAGED BLOCK {{ service_group }}"
+    path: /home/{{ username }}/docker/ai/assets/config.yml
+    block: "{{ lookup('template', 'templates/homer/group.yml.j2') }}"
+  vars:
+    service_group: LLM 
+
+- name: Include ollama
+  ansible.builtin.include_tasks: ollama.yml 
+
+- name: Include openwebui
+  ansible.builtin.include_tasks: openwebui.yml 
+
+

@@ -1,0 +1,11 @@
+---
+- name: Copy homer config
+  ansible.builtin.copy:
+    src: homer/{{ item.name }}.yml
+    dest: /home/{{ username }}/docker/{{ item.name }}/assets/config.yml
+    owner: "1000"
+    group: "1000"
+  loop: "{{ docker_services }}"
+  when: "'homer' in item.name or (item.src is defined and 'homer' in item.src)"
+
+

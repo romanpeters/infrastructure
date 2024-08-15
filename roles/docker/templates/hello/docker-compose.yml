@@ -1,6 +1,4 @@
 ---
-version: "2.1"
-
 services:
   heimdall:
     image: linuxserver/heimdall:2021.11.28

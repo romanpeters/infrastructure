@@ -21,9 +21,15 @@ base_packages:
   - python3
   - python3-pip
   - unattended-upgrades
+#  - topgrade
 
 base_packages_dev:
   - ansible
   - ansible-lint
   - pre-commit
   - ipcalc
+
+base_media_share:
+  src: "10.10.10.99:/volume1/media"
+  dest: "/mnt/media"
+  options: "rw,hard,intr,rsize=131072,wsize=131072,timeo=30,retrans=10"

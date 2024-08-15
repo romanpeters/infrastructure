@@ -8,11 +8,16 @@ server {
     root /var/www/html/romanpeters.nl;
 
     location = / {
-      return 301 https://hello.romanpeters.nl/;
+        return 301 https://hello.romanpeters.nl/;
     }
 
     location / {
-      try_files $uri $uri.html $uri/ =404;
-      error_page 404 /404.html;
+        try_files $uri $uri.html $uri/ =404;
+    }
+
+    error_page 404 /404.html;
+    location = /404.html {
+        root /var/www/html/romanpeters.nl;
+        internal;
     }
 }

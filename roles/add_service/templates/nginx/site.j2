@@ -1,6 +1,6 @@
 server {
     listen 443 ssl;
-    server_name {{ service_name }}.{{ domain }};
+    server_name {{ service_name }}.{{ domain }} {% for a in service_alias %}{{ a }}.{{ domain }}{% if not loop.last %} {% endif %}{% endfor %};
 
     ssl_certificate /etc/letsencrypt/live/{{ domain }}/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/{{ domain }}/privkey.pem;
@@ -9,8 +9,16 @@ server {
 {% if not service_remote %}
         allow 100.64.0.0/10;
         allow 10.10.10.0/24;
+        allow 10.10.20.0/24;
         deny all;
 {% endif %}
+
+{% if service_alias %}
+        if ($host != '{{ service_name }}.{{ domain }}') {
+            return 301 https://{{ service_name }}.{{ domain }}$request_uri;
+        }
+{% endif %}
+
         proxy_pass {{ 'https' if service_ssl is defined and service_ssl else 'http' }}://{{ service_ip | default("127.0.0.1") }}:{{ service_port }};
 {% if service_ssl is defined and service_ssl %}
         proxy_ssl_verify off;

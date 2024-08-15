@@ -5,6 +5,13 @@
     state: present
     createhome: true
 
+- name: Create system user mediamanager
+  ansible.builtin.user:
+    name: mediamanager
+    uid: 1080
+    system: true
+  when: mount_media is defined and mount_media
+
 - name: Add passwordless sudo
   ansible.builtin.lineinfile:
     path: /etc/sudoers.d/{{ username }}

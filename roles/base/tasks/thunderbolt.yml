@@ -1,0 +1,21 @@
+---
+- name: Install bolt and tools
+  apt:
+    name:
+      - bolt
+      - thunderbolt-tools
+    state: present
+
+- name: Load thunderbolt kernel module
+  modprobe:
+    name: thunderbolt
+
+- name: Verify thunderbolt connectivity
+  command: "boltctl list"
+  register: boltctl_output
+  changed_when: false  # Marks task as not having made changes
+
+#- name: Enroll Thunderbolt device
+#  command: "boltctl enroll {{ item }}"
+#  with_items: "{{ boltctl_output.stdout_lines }}"
+#  when: "'authorized' not in item.attributes"

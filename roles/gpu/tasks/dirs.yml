@@ -1,0 +1,17 @@
+---
+- name: Check if /models directory exists
+  stat:
+    path: /models
+  register: dir_check
+
+- name: Fail if /models directory does not exist
+  assert:
+    that:
+      - dir_check.stat.exists
+    fail_msg: "/models directory does not exist"
+
+- name: Create /home/{{ username }}/ai directory
+  file:
+    path: /home/{{ username }}/ai
+    state: directory
+    owner: "{{ username }}"

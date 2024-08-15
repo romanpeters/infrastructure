@@ -15,63 +15,34 @@
     group: www-data
     mode: "0644"
   loop:
+    - "403.html"
     - "404.html"
     - "styles.css"
 
-- name: Copy default site
+- name: Copy default_site
   ansible.builtin.copy:
-    src: "files/etc/nginx/sites-available/00-default"
-    dest: "/etc/nginx/sites-available/00-{{ domain }}"
+    src: "files/etc/nginx/sites-available/{{ item }}"
+    dest: "/etc/nginx/sites-available/{{ item }}"
+  loop:
+    - default_site
+    - "{{ domain }}"
 
 - name: Enable default site
   ansible.builtin.file:
-    src: "/etc/nginx/sites-available/00-{{ domain }}"
-    dest: "/etc/nginx/sites-enabled/00-{{ domain }}"
+    src: "/etc/nginx/sites-available/{{ item }}"
+    dest: "/etc/nginx/sites-enabled/{{ item }}"
     state: link
+  loop:
+    - default_site
+    - "{{ domain }}"
 
-- name: Copy Nginx file to proxy server
-  ansible.builtin.template:
-    src: nginx.j2
-    dest: "/etc/nginx/sites-available/{{ item.name }}.{{ domain }}"
+- include_role:
+    name: add_service
   vars:
     service_ip: "{{ item.ip }}"
     service_name: "{{ item.name }}"
-    service_port: "{{ item.port if item.port is defined else (443 if item.ssl | default(false) else 80) }}"
-    service_ssl: "{{ item.ssl | default(false) }}"
+    service_alias: "{{ item.alias | default([]) }}"
+    service_port: "{{ item.port | default(80) }}"
     service_remote: "{{ item.remote | default(false) }}"
+    service_ssl: "{{ item.ssl | default(false) }}"
   loop: "{{ reverse_proxy }}"
-
-- name: Enable sites on proxy server
-  ansible.builtin.file:
-    src: "/etc/nginx/sites-available/{{ item.name }}.{{ domain }}"
-    dest: "/etc/nginx/sites-enabled/{{ item.name }}.{{ domain }}"
-    state: link
-  loop: "{{ reverse_proxy }}"
-
-- name: Delete file
-  ansible.builtin.file:
-    path: "/var/www/html/{{ domain }}/list"
-    state: absent
-
-- name: Add URL to list file
-  ansible.builtin.lineinfile:
-    path: "/var/www/html/{{ domain }}/list.txt"
-    line: "https://{{ item.name }}.{{ domain }}"
-    create: true
-  loop: "{{ reverse_proxy }}"
-
-- name: Set ownership of list file
-  ansible.builtin.file:
-    path: /var/www/html/{{ domain }}/list.txt
-    owner: www-data
-    group: www-data
-    state: file
-
-- name: Test Nginx configuration
-  ansible.builtin.command: nginx -t
-  changed_when: false
-
-- name: Restart nginx proxy
-  ansible.builtin.service:
-    name: nginx
-    state: restarted

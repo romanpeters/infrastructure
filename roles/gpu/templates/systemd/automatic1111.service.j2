@@ -1,0 +1,13 @@
+[Unit]
+Description = AUTOMATIC1111
+After=network.target
+
+[Service]
+Restart=always
+ExecStart={{ service_dir }}/webui.sh --listen --api --xformers
+WorkingDirectory={{ service_dir }}
+User={{ username }}
+Group={{ username }}
+
+[Install]
+WantedBy=multi-user.target

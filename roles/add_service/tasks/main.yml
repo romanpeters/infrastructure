@@ -1,0 +1,4 @@
+---
+- name: Include nginx
+  ansible.builtin.include_tasks: nginx.yml
+  tags: nginx
