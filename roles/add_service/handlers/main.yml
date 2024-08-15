@@ -1,0 +1,11 @@
+- name: test nginx
+  ansible.builtin.command: nginx -t
+  delegate_to: webserver
+  listen: restart nginx
+
+- name: reload nginx
+  ansible.builtin.service:
+    name: nginx
+    state: reloaded
+  delegate_to: webserver
+  listen: restart nginx

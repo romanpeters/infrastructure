@@ -1,0 +1,16 @@
+---
+- name: Set dynamic variables
+  ansible.builtin.set_fact:
+    service_name: chat
+    service_port: 3080 # duplicate entry
+
+- name: Append homer_item template to config.yml
+  ansible.builtin.blockinfile:
+    state: present
+    insertafter: EOF
+    marker: "# {mark} ANSIBLE MANAGED BLOCK {{ service_name }}"
+    path: /home/{{ username }}/docker/ai/assets/config.yml
+    block: "{{ lookup('template', 'templates/homer/item.yml.j2') }}"
+  vars:
+    service_name: Chat
+  notify: restart homer

@@ -1,13 +1,14 @@
 - name: test nginx configuration
   ansible.builtin.command: nginx -t
   delegate_to: webserver
-  notify: reload nginx
+  listen: restart nginx
 
 - name: reload nginx
   ansible.builtin.service:
     name: nginx
     state: reloaded
   delegate_to: webserver
+  listen: restart nginx
 
 - name: restart homer
   docker_container:
@@ -16,13 +17,23 @@
     state: present
     restart: true
 
-- name: reload systemd
-  systemd:
-    state: reloaded
-    daemon_reload: yes
-
-- name: start fooocus
+- name: restart fooocus
   systemd:
     name: fooocus
-    state: started
+    daemon_reload: yes
+    state: restarted
+    enabled: yes
+
+- name: restart automatic1111
+  systemd:
+    name: automatic1111
+    daemon_reload: yes
+    state: restarted
+    enabled: yes
+
+- name: restart whisper
+  systemd:
+    name: whisper
+    daemon_reload: yes
+    state: restarted
     enabled: yes

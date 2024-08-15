@@ -38,6 +38,7 @@ reverse_proxy:
     ssl: true
   - name: unifi
     ip: 10.10.10.254
+    port: 443
     ssl: true
   - name: proxmox
     ip: 10.10.10.250
@@ -45,7 +46,9 @@ reverse_proxy:
     ssl: true
   - name: ansible
     ip: 10.10.20.35
+    port: 443
     ssl: true
+
 
   # temporary
   - name: books
@@ -56,3 +59,26 @@ reverse_proxy:
     remote: true
   - name: git
     ip: 10.10.10.106
+  - name: sonarr
+    ip: 10.10.20.20
+    port: 8989 
+  - name: sonarr4k
+    ip: 10.10.20.20
+    port: 8988
+  - name: radarr
+    ip: 10.10.20.20
+    port: 7878
+  - name: radarr4k
+    ip: 10.10.20.20
+    port: 7879
+  - name: transmission
+    ip: 10.10.10.20
+    port: 9091
+  - name: prowlarr
+    ip: 10.10.10.20
+    port: 9696
+  - name: search
+    ip: 10.10.10.20
+    port: 8080
+
+

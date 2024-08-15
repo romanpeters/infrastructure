@@ -10,14 +10,8 @@
       - dir_check.stat.exists
     fail_msg: "/models directory does not exist"
 
-- name: Create /opt/ai directory
+- name: Create /home/{{ username }}/ai directory
   file:
-    path: /opt/ai
+    path: /home/{{ username }}/ai
     state: directory
-
-- name: Create symlink for /opt/ai to romanpeters's home directory
-  become: true
-  file:
-    src: /opt/ai
-    dest: /home/romanpeters/ai
-    state: link
+    owner: "{{ username }}"

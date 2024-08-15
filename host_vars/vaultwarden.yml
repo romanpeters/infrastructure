@@ -3,6 +3,8 @@ ip_address: "10.10.10.105"
 
 docker_services:
     - name: vaultwarden
+      alias:
+        - bitwarden
       port: 3011
 
 vaultwarden_admin_token: !vault |

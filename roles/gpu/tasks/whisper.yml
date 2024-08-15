@@ -1,0 +1,60 @@
+---
+- name: Set dynamic variables
+  ansible.builtin.set_fact:
+    service_name: whisper
+    service_port: 8000
+    service_ip: "{{ ansible_host }}"
+    service_alias: []
+    service_remote: false
+
+- name: Set service_dir
+  ansible.builtin.set_fact:
+    service_dir: "/home/{{ username }}/docker/{{ service_name }}"
+
+- name: Clone FastWhisperApi repository
+  become: yes
+  become_user: "{{ username }}"
+  ansible.builtin.git:
+    repo: https://github.com/3choff/FastWhisperAPI.git
+    dest: "{{ service_dir }}"
+    update: no
+    force: yes
+  notify: restart whisper
+
+- name: Build the Docker image
+  community.docker.docker_image:
+    name: "fastwhisperapi"
+    tag: "latest"
+    build:
+      path: "{{ service_dir }}"
+    source: build
+
+- name: Copy Docker Compose file to remote host from inline content
+  ansible.builtin.copy:
+    dest: "{{ service_dir }}/docker-compose.yml"
+    content: |
+      ---
+      services:
+        {{ service_name }}:
+          image: fastwhisperapi:latest
+          container_name: {{ service_name }}
+          ports:
+            - "{{ service_port }}:8000"
+
+- name: Run docker-compose up
+  community.docker.docker_compose:
+    project_src: "{{ service_dir }}"
+    state: present
+
+- include_role: 
+    name: add_service
+
+- name: Insert Nginx configuration block for API
+  ansible.builtin.blockinfile:
+    path: /etc/nginx/sites-available/ai.{{ domain }}
+    marker: "# {mark} ANSIBLE MANAGED BLOCK FOR {{ service_name | upper() }}"
+    insertbefore: "}"
+    block: "{{ lookup('template', 'templates/nginx/{{ service_name }}.j2') }}"
+  delegate_to: webserver
+  notify: restart nginx
+

@@ -1,0 +1,12 @@
+---
+ip_address: "10.10.20.30"
+
+docker_services:
+  - name: ai
+    src: homer
+    port: 80
+  - name: ollama
+    port: 11434
+  - name: chat
+    src: open-webui
+    port: 3080

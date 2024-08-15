@@ -9,10 +9,8 @@
   ansible.builtin.set_fact:
     host_ip: "{{ ansible_default_ipv4.address }}"
 
-- name: Copy Nginx file to proxy server
-  ansible.builtin.template:
-    src: nginx.j2
-    dest: "/etc/nginx/sites-available/{{ item.name }}.{{ domain }}"
+- include_role:
+    name: add_service
   vars:
     service_ip: "{{ host_ip }}"
     service_name: "{{ item.name }}"
@@ -20,31 +18,4 @@
     service_port: "{{ item.port }}"
     service_remote: "{{ item.remote | default(false) }}"
   loop: "{{ docker_services }}"
-  delegate_to: webserver
 
-- name: Enable sites on proxy server
-  ansible.builtin.file:
-    src: "/etc/nginx/sites-available/{{ item.name }}.{{ domain }}"
-    dest: "/etc/nginx/sites-enabled/{{ item.name }}.{{ domain }}"
-    state: link
-  loop: "{{ docker_services }}"
-  delegate_to: webserver
-
-- name: Add new URL to the list
-  ansible.builtin.set_fact:
-    docker_sites: "{{ docker_sites + ['https://' + item.name + '.' + domain] }}"
-  loop: "{{ docker_services }}"
-
-- name: Add URL to list file
-  ansible.builtin.lineinfile:
-    path: "/var/www/html/{{ domain }}/list.txt"
-    line: "https://{{ item.name }}.{{ domain }}"
-    create: true
-  loop: "{{ docker_services }}"
-  delegate_to: webserver
-
-- name: Test Nginx configuration
-  ansible.builtin.command: nginx -t
-  changed_when: false
-  notify: Restart nginx proxy
-  delegate_to: webserver
