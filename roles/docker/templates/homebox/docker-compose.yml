@@ -1,7 +1,7 @@
 ---
 services:
   homebox:
-    image: ghcr.io/sysadminsmedia/homebox:0.15.1
+    image: ghcr.io/sysadminsmedia/homebox:0.15.2
     container_name: "{{ service_name }}"
     environment:
       - HBOX_LOG_LEVEL=info
