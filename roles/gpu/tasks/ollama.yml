@@ -1,0 +1,31 @@
+---
+# Additional config for ollama
+# Should move to other tasks file later
+- name: Set dynamic variables
+  ansible.builtin.set_fact:
+    service_name: ollama
+    service_port: 11434 # duplicate entry
+
+- name: Set service_dir
+  ansible.builtin.set_fact:
+    service_dir: /home/{{ username }}/ai/{{ service_name }}
+
+- name: Create models directory
+  ansible.builtin.file:
+    path: /models/{{ service_name }}
+    state: directory
+
+- name: Create symlink
+  ansible.builtin.file:
+    src: /models/{{ service_name }}
+    dest: /home/{{ username }}/docker/{{ service_name }}/models
+    state: link
+
+- name: Insert Nginx configuration block for API
+  ansible.builtin.blockinfile:
+    path: /etc/nginx/sites-available/ai.{{ domain }}
+    marker: "# {mark} ANSIBLE MANAGED BLOCK FOR {{ service_name | upper() }}"
+    insertbefore: "}"
+    block: "{{ lookup('template', 'templates/nginx/{{ service_name }}.j2') }}"
+  delegate_to: webserver
+  notify: restart nginx

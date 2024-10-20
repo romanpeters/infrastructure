@@ -17,6 +17,7 @@
 
 - name: Configure plex host
   hosts: plex
+  become: true
   tasks:
     - name: Include nowplaying tasks
       ansible.builtin.import_tasks:

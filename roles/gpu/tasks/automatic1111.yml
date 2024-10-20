@@ -1,0 +1,93 @@
+---
+- name: Set dynamic variables
+  ansible.builtin.set_fact:
+    service_name: automatic1111
+    service_port: 7860
+    service_ip: "{{ ansible_host }}"
+    service_alias: []
+    service_remote: false
+
+- name: Set service_dir
+  ansible.builtin.set_fact:
+    service_dir: /home/{{ username }}/ai/{{ service_name }}
+
+- name: Install dependencies
+  ansible.builtin.apt:
+    name:
+      - libgl1
+      - libglib2.0-0
+
+- name: Clone AUTOMATIC1111 repository
+  become: true
+  become_user: "{{ username }}"
+  ansible.builtin.git:
+    repo: https://github.com/AUTOMATIC1111/stable-diffusion-webui.git
+    dest: "{{ service_dir }}"
+    update: false
+    force: true
+  notify: restart automatic1111
+
+- name: Make webui.sh executable
+  ansible.builtin.file:
+    path: "{{ service_dir }}/webui.sh"
+    mode: "0755"
+  notify: restart automatic1111
+
+- name: Create models directory
+  ansible.builtin.file:
+    path: /models/{{ service_name }}
+    state: directory
+    owner: "{{ username }}"
+    group: "{{ username }}"
+    mode: "0755"
+  notify: restart automatic1111
+
+- name: Check if models directory is a symlink
+  ansible.builtin.stat:
+    path: "{{ service_dir }}/models"
+    follow: false
+  register: models_stat
+
+- name: Remove models if it exists and is not a symlink
+  ansible.builtin.file:
+    path: "{{ service_dir }}/models"
+    state: absent
+  when: models_stat.stat.exists and not models_stat.stat.islnk
+
+- name: Create models symlink
+  ansible.builtin.file:
+    src: /models/{{ service_name }}
+    dest: "{{ service_dir }}/models"
+    state: link
+  notify: restart automatic1111
+
+- name: Copy systemd unit file
+  ansible.builtin.template:
+    src: systemd/{{ service_name }}.service.j2
+    dest: /etc/systemd/system/{{ service_name }}.service
+    mode: "0644"
+  notify: restart automatic1111
+
+- name: Append homer_item template to config.yml
+  ansible.builtin.blockinfile:
+    marker: "# {mark} ANSIBLE MANAGED BLOCK {{ service_name }}"
+    state: present
+    insertafter: EOF
+    path: /home/{{ username }}/docker/ai/assets/config.yml
+    block: "{{ lookup('template', 'templates/homer/item.yml.j2') }}"
+  vars:
+    service_name: AUTOMATIC1111
+  notify: restart homer
+
+- name: Add service
+  ansible.builtin.include_role:
+    name: service
+
+- name: Insert Nginx configuration block for API
+  ansible.builtin.blockinfile:
+    path: /etc/nginx/sites-available/ai.{{ domain }}
+    marker: "# {mark} ANSIBLE MANAGED BLOCK FOR {{ service_name | upper() }}"
+    insertbefore: "}"
+    block: "{{ lookup('template', 'templates/nginx/{{ service_name }}.j2') }}"
+  delegate_to: webserver
+  notify: restart nginx

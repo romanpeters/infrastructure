@@ -1,0 +1,17 @@
+---
+- name: Check if /models directory exists
+  ansible.builtin.stat:
+    path: /models
+  register: dir_check
+
+- name: Fail if /models directory does not exist
+  ansible.builtin.assert:
+    that:
+      - dir_check.stat.exists
+    fail_msg: /models directory does not exist
+
+- name: Create ~/ai directory
+  ansible.builtin.file:
+    path: /home/{{ username }}/ai
+    state: directory
+    owner: "{{ username }}"

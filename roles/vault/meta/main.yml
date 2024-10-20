@@ -1,0 +1,9 @@
+---
+galaxy_info:
+  author: Roman Peters
+  description: vault
+  issue_tracker_url: https://git.romanpeters.nl/romanpeters/vault/-/issues
+  license: ""
+  min_ansible_version: "2.1"
+  galaxy_tags: []
+dependencies: []

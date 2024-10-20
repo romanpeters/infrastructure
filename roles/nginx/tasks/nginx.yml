@@ -1,0 +1,16 @@
+---
+- name: Install nginx
+  ansible.builtin.package:
+    name: nginx
+
+- name: Copy nginx.conf files
+  ansible.builtin.copy:
+    src: files/etc/nginx/{{ item }}
+    dest: /etc/nginx/{{ item }}
+  loop:
+    - nginx.conf
+
+- name: Test Nginx configuration
+  ansible.builtin.command: nginx -t
+  changed_when: false
+  notify: Restart nginx proxy
