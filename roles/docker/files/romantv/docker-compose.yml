@@ -1,3 +1,4 @@
+---
 version: "2.1"
 
 services:
@@ -12,9 +13,9 @@ services:
       - 3838:80
     restart: unless-stopped
     labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.myapp.rule=Host(`tv.romanpeters.nl`)"
-      - "traefik.http.services.myapp.loadbalancer.server.port=3838"
+      - traefik.enable=true
+      - traefik.http.routers.myapp.rule=Host(`tv.romanpeters.nl`)
+      - traefik.http.services.myapp.loadbalancer.server.port=3838
 
   tautulli:
     image: linuxserver/tautulli:2.13.4
@@ -29,9 +30,9 @@ services:
       - ./tautulli:/config
     restart: unless-stopped
     labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.myapp.rule=Host(`tautulli.romanpeters.nl`)"
-      - "traefik.http.services.myapp.loadbalancer.server.port=8181"
+      - traefik.enable=true
+      - traefik.http.routers.myapp.rule=Host(`tautulli.romanpeters.nl`)
+      - traefik.http.services.myapp.loadbalancer.server.port=8181
 
   overseerr:
     image: sctx/overseerr:1.33.2
@@ -45,6 +46,6 @@ services:
       - TZ=Europe/Amsterdam
     restart: unless-stopped
     labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.myapp.rule=Host(`requests.romanpeters.nl`)"
-      - "traefik.http.services.myapp.loadbalancer.server.port=5055"
+      - traefik.enable=true
+      - traefik.http.routers.myapp.rule=Host(`requests.romanpeters.nl`)
+      - traefik.http.services.myapp.loadbalancer.server.port=5055

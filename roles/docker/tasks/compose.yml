@@ -6,49 +6,64 @@
       - docker==6.1.3
       - docker-compose
 
-- name: Ensure the directory exists
+- name: Clone Docker Compose Git Repository to /srv/git
+  ansible.builtin.git:
+    repo: https://github.com/romanpeters/infrastructure_docker
+    dest: /srv/git/infrastructure_docker
+    version: main
+
+- name: Delete existing index.yml if it exists
   ansible.builtin.file:
-    path: "/home/{{ username }}/docker/{{ item.group | default(item.name) }}"
-    state: directory
+    path: /tmp/index.yml
+    state: absent
+  changed_when: false
+
+- name: Fetch remote variable file
+  ansible.builtin.fetch:
+    src: /srv/git/infrastructure_docker/index.yml
+    dest: /tmp/
+    flat: true
+
+- name: Load docker compose variables from index.yml
+  ansible.builtin.include_vars:
+    file: /tmp/index.yml
+
+- name: Assert all items from docker_services are defined in infrastructure_docker
+  ansible.builtin.assert:
+    that:
+      - item in (infrastructure_docker | map(attribute='name') | list) or item in (infrastructure_docker | map(attribute='path') | list)
+    fail_msg: Service '{{ item }}' not found in infrastructure_docker.
   loop: "{{ docker_services }}"
 
-- name: Find directories in docker dir
-  ansible.builtin.find:
-    paths: "/home/{{ username }}/docker/"
-    file_type: directory
-  register: existing_docker_services
+- name: Filter docker compose variables based on docker_services
+  ansible.builtin.set_fact:
+    enabled_docker_services: >
+      {{ infrastructure_docker | selectattr('name', 'in', docker_services) | list +
+         infrastructure_docker | selectattr('path', 'in', docker_services) | list
+         | unique }}
 
-- name: Copy Docker Compose files
-  ansible.builtin.template:
-    src: "{{ item.src | default(item.group | default(item.name)) }}/docker-compose.yml"
-    dest: /home/{{ username }}/docker/{{ item.group | default(item.name) }}/docker-compose.yml
+- name: Copy infrastructure_docker files
+  ansible.builtin.copy:
+    src: /srv/git/infrastructure_docker/{{ item.path }}/
+    dest: /srv/docker/{{ item.name }}/
+    remote_src: true
     owner: "{{ username }}"
     group: "{{ username }}"
-  vars:
-    service_name: "{{ item.name }}"
-    service_port: "{{ item.port }}"
-  loop: "{{ docker_services }}"
-
-- name: Stop other containers
-  community.docker.docker_compose:
-    project_src: "{{ item.path }}"
-    state: absent
-  loop: "{{ existing_docker_services.files }}"
-  when: item.path.split('/') | last not in docker_services
-  ignore_errors: true
+  loop: "{{ enabled_docker_services }}"
 
 - name: Start docker containers
-  community.docker.docker_compose:
-    project_src: /home/{{ username }}/docker/{{ item.group | default(item.name) }}
+  community.docker.docker_compose_v2:
+    project_src: /srv/docker/{{ item.name }}
     state: present
-  loop: "{{ docker_services }}"
-  when: item.group is not defined
+  loop: "{{ enabled_docker_services }}"
 
-- name: Start docker container groups
-  community.docker.docker_compose:
-    project_src: /home/{{ username }}/docker/{{ group.0.group }}
-    state: present
-  loop: "{{ your_items_list | groupby('group') }}"
-  loop_control:
-    label: "{{ group.0.group }}"
-  when: group.0.group is defined
+- name: Add service
+  ansible.builtin.include_role:
+    name: service
+  vars:
+    service_ip: "{{ ansible_default_ipv4.address }}"
+    service_name: "{{ item.name }}"
+    service_port: "{{ item.port }}"
+    service_remote: "{{ false }}" # TODO fix
+    service_alias: "{{ [] }}"
+  loop: "{{ enabled_docker_services }}"

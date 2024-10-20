@@ -1,9 +1,10 @@
 10.10.1.254	router
 10.10.10.100	networker
 10.10.10.105	vaultwarden
+10.10.10.106	#gitlab
 10.10.10.108	jenkins
 10.10.10.111	hass
-10.10.10.248	octopi
+10.10.10.248	#octopi
 10.10.10.249	pbs
 10.10.10.250	proxmox
 10.10.10.254	udmp
@@ -13,6 +14,6 @@
 10.10.20.21	plex
 10.10.20.22	romantv
 10.10.20.25	production
-10.10.20.28	#kubernetes
 10.10.20.30	gpu
 10.10.20.35	rhel
+10.10.20.45	#media

@@ -1,7 +1,7 @@
 ---
 - name: Ensure .config directory exists
   ansible.builtin.file:
-    path: "/home/{{ username }}/.config"
+    path: /home/{{ username }}/.config
     state: directory
     owner: "{{ username }}"
     group: "{{ username }}"

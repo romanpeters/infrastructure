@@ -1,4 +1,0 @@
----
-docker_services:
-  - name: nginx
-    port: 81

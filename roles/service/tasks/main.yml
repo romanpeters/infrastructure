@@ -1,0 +1,15 @@
+---
+- name: Copy Nginx file to webserver for {{ service_name }}
+  ansible.builtin.template:
+    src: nginx_site.j2
+    dest: /etc/nginx/sites-available/{{ service_name }}.{{ domain }}
+  delegate_to: webserver
+  notify: restart nginx
+
+- name: Create symlink to enable {{ service_name }}
+  ansible.builtin.file:
+    src: /etc/nginx/sites-available/{{ service_name }}.{{ domain }}
+    dest: /etc/nginx/sites-enabled/{{ service_name }}.{{ domain }}
+    state: link
+  delegate_to: webserver
+  notify: restart nginx

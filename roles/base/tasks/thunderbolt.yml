@@ -1,0 +1,16 @@
+---
+- name: Install bolt and tools
+  ansible.builtin.apt:
+    name:
+      - bolt
+      - thunderbolt-tools
+    state: present
+
+- name: Load thunderbolt kernel module
+  community.general.modprobe:
+    name: thunderbolt
+
+- name: Verify thunderbolt connectivity
+  ansible.builtin.command: boltctl list
+  register: boltctl_output
+  changed_when: false

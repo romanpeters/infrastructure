@@ -1,5 +1,10 @@
 ---
+exclude_paths:
+  - .github
+
 skip_list:
   - risky-file-permissions
   - ignore-errors
   - latest[git]
+  - no-changed-when
+  - no-handler

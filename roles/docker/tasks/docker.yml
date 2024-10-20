@@ -21,10 +21,12 @@
   ansible.builtin.apt_repository:
     repo: deb [arch=amd64] https://download.docker.com/linux/{{ ansible_distribution | lower }} {{ ansible_lsb.codename }} stable
     state: present
+  register: docker_repo
 
 - name: Update package cache again
   ansible.builtin.apt:
     update_cache: true
+  when: docker_repo.changed
 
 - name: Install Docker
   ansible.builtin.apt:
@@ -42,3 +44,27 @@
     name: docker
     state: started
     enabled: true
+
+- name: Ensure Python dependencies
+  ansible.builtin.package:
+    name:
+      - python3-requests
+      - python3-docker
+      - docker-compose
+
+- name: Ensure docker directory exists
+  ansible.builtin.file:
+    path: /srv/docker
+    state: directory
+
+- name: Configure sudoers file to prevent deletion of ~/docker
+  ansible.builtin.lineinfile:
+    dest: /etc/sudoers.d/prevent_rm_docker
+    line: "%sudo ALL=(ALL) /usr/bin/rm -r --ignore-fail-on-non-empty --exclude=/srv/docker/*"
+    create: true
+
+- name: Create a symbolic link
+  ansible.builtin.file:
+    src: /srv/docker
+    dest: /home/{{ username }}/docker
+    state: link

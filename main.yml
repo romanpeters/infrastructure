@@ -15,13 +15,6 @@
     - role: docker
       tags: docker
 
-- name: Configure rhel host
-  hosts: rhel
-  tasks:
-    - name: Include reboot-router cron tasks
-      ansible.builtin.import_tasks:
-        file: tasks/reboot-router-cron.yml
-
 - name: Configure plex host
   hosts: plex
   tasks:

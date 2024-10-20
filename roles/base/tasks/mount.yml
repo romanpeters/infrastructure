@@ -1,0 +1,33 @@
+---
+- name: Install NFS client packages
+  ansible.builtin.package:
+    name: nfs-common
+    state: present
+
+- name: Ensure /mnt/media directory exists
+  ansible.builtin.file:
+    path: /mnt/media
+    state: directory
+    owner: mediamanager
+    group: mediamanager
+
+- name: Configure sudoers file to prevent deletion of /mnt/media
+  ansible.builtin.copy:
+    dest: /etc/sudoers.d/prevent_rm_media
+    content: |
+      %sudo ALL=(ALL) /usr/bin/rm -r --ignore-fail-on-non-empty --exclude=/mnt/media/*
+
+- name: Add media_share entry to /etc/fstab
+  ansible.builtin.lineinfile:
+    path: /etc/fstab
+    line: "{{ media_share.src }} {{ media_share.dest }} nfs {{ media_share.options }} 0 0"
+    state: present
+    create: true
+
+- name: Mount NFS filesystem
+  ansible.posix.mount:
+    src: "{{ media_share.src }}"
+    path: "{{ media_share.dest }}"
+    fstype: nfs
+    opts: "{{ media_share.options }}"
+    state: mounted
