@@ -1,16 +1,14 @@
 ---
 - name: Install NVIDIA driver, CUDA, nvidia-smi, nvidia-settings
-  apt:
+  ansible.builtin.apt:
     name:
       - linux-headers-generic
     state: present
 
 - name: Install GPU drivers with ubuntu-drivers
-  command: ubuntu-drivers autoinstall
+  ansible.builtin.command: ubuntu-drivers autoinstall
   changed_when: false
 
 - name: Test nvidia drivers
-  command: nvidia-smi
+  ansible.builtin.command: nvidia-smi
   changed_when: false
-
-

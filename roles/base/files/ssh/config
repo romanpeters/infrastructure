@@ -1,7 +1,7 @@
 Host router
     Hostname 10.10.1.254
 
-Host networker
+Host #networker
     Hostname 10.10.10.100
 
 Host vaultwarden
@@ -46,7 +46,7 @@ Host romantv
 Host production
     Hostname 10.10.20.25
 
-Host gpu
+Host #gpu
     Hostname 10.10.20.30
 
 Host rhel

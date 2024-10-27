@@ -1,0 +1,14 @@
+---
+version: "2.1"
+
+services:
+  heimdall:
+    image: linuxserver/heimdall:2.5.8
+    container_name: "{{ service_name }}"
+    environment:
+      - APP_NAME=romanpeters
+    volumes:
+      - ./heimdall:/config
+    ports:
+      - "{{ service_port }}:80"
+    restart: always

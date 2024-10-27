@@ -1,6 +1,0 @@
----
-ip_adress: "10.10.10.100"
-
-docker_services:
-  - name: uptime
-    port: 3001

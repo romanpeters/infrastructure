@@ -4,14 +4,14 @@
 - name: Set dynamic variables
   ansible.builtin.set_fact:
     service_name: ollama
-    service_port: 11434  # duplicate entry
+    service_port: 11434 # duplicate entry
 
 - name: Set service_dir
   ansible.builtin.set_fact:
-    service_dir: "/home/{{ username }}/ai/{{ service_name }}"
+    service_dir: /home/{{ username }}/ai/{{ service_name }}
 
-- name: Create /models/{{ service_name }} directory
-  file:
+- name: Create models directory
+  ansible.builtin.file:
     path: /models/{{ service_name }}
     state: directory
 

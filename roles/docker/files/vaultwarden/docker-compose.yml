@@ -1,0 +1,26 @@
+---
+version: "3"
+
+services:
+  vaultwarden:
+    image: vaultwarden/server:1.30.1
+    container_name: "{{ service_name }}"
+    environment:
+      WEBSOCKET_ENABLED: "true"
+      SIGNUPS_ALLOWED: "true"
+      SENDS_ALLOWED: "true"
+      LOG_FILE: /data/logs/bitwarden.log
+      EXTENDED_LOGGING: "false"
+      LOG_LEVEL: warn
+      ADMIN_TOKEN: "{{ vaultwarden_admin_token }}"
+    volumes:
+      - ./data:/data
+    ports:
+      - 3012:3012 # websocket
+      - "{{ service_port }}:80"
+    restart: unless-stopped
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.vaultwarden.rule=Host(`{{ service_name }}.romanpeters.nl`)
+      - traefik.http.services.vaultwarden.loadbalancer.server.port={{ service_port }}
+      - traefik.http.services.vaultwarden.loadbalancer.server.scheme=http

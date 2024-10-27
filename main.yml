@@ -7,22 +7,6 @@
     - role: base
       tags: base
 
-- name: Configure plex host
-  hosts: plex
-  become: true
-  vars_files:
-    - roles/vault/defaults/main.yml
-  roles:
-    - role: plex
-      tags: plex
-
-- name: Configure nginx host
-  hosts: webserver
-  become: true
-  roles:
-    - role: nginx
-      tags: nginx
-
 - name: Configure Docker
   hosts: docker
   strategy: "{{ ansible_strategy | default('ansible.builtin.linear') }}"
@@ -31,9 +15,10 @@
     - role: docker
       tags: docker
 
-- name: Configure gpu host
-  hosts: gpu
+- name: Configure plex host
+  hosts: plex
   become: true
-  roles:
-    - role: gpu
-      tags: gpu
+  tasks:
+    - name: Include nowplaying tasks
+      ansible.builtin.import_tasks:
+        file: tasks/nowplaying.yml

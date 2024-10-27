@@ -6,8 +6,8 @@
 
 - name: Install cron job for Certbot renewal
   ansible.builtin.cron:
-    name: "Renew SSL certificate with Certbot"
-    job: "certbot renew --quiet --post-hook 'systemctl reload nginx'"
+    name: Renew SSL certificate with Certbot
+    job: certbot renew --quiet --dns-cloudflare-credentials /etc/nginx/cloudflare.ini --post-hook 'systemctl reload nginx'
     day: "1"
     hour: "4"
     minute: "0"

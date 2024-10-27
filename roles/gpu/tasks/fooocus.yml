@@ -9,20 +9,20 @@
 
 - name: Set service_dir
   ansible.builtin.set_fact:
-    service_dir: "/home/{{ username }}/ai/{{ service_name }}"
+    service_dir: /home/{{ username }}/ai/{{ service_name }}
 
 - name: Clone Fooocus repository
-  become: yes
+  become: true
   become_user: "{{ username }}"
   ansible.builtin.git:
     repo: https://github.com/lllyasviel/Fooocus.git
     dest: "{{ service_dir }}"
-    update: no
-    force: yes
+    update: false
+    force: true
   notify: restart fooocus
 
-- name: Create /models/{{ service_name }} directory
-  file:
+- name: Create directory /models/{{ service_name }}
+  ansible.builtin.file:
     path: /models/{{ service_name }}
     state: directory
     owner: "{{ username }}"
@@ -30,14 +30,14 @@
     mode: "0755"
   notify: restart fooocus
 
-- name: Check if {{ service_dir }}/models is a symlink
+- name: Check if models directory is a symlink
   ansible.builtin.stat:
     path: "{{ service_dir }}/models"
     follow: false
   register: models_stat
 
-- name: Copy contents of {{ service_dir }}/models/
-  copy:
+- name: Copy contents of models directory
+  ansible.builtin.copy:
     src: "{{ service_dir }}/models/"
     dest: /models/{{ service_name }}/
     owner: "{{ username }}"
@@ -46,7 +46,7 @@
   when: models_stat.stat.exists and not models_stat.stat.islnk
   notify: restart fooocus
 
-- name: Remove {{ service_dir }}/models if it exists and is not a symlink
+- name: Remove models directory if it exists and is not a symlink
   ansible.builtin.file:
     path: "{{ service_dir }}/models"
     state: absent
@@ -61,17 +61,17 @@
   notify: restart fooocus
 
 - name: Set up Python virtual environment
-  become: yes
+  become: true
   become_user: "{{ username }}"
-  command:
+  ansible.builtin.command:
     cmd: python3 -m venv {{ service_dir }}/fooocus_env
     creates: "{{ service_dir }}/fooocus_env/bin/activate"
   notify: restart fooocus
 
 - name: Install Python dependencies from requirements_versions.txt
-  become: yes
+  become: true
   become_user: "{{ username }}"
-  pip:
+  ansible.builtin.pip:
     requirements: "{{ service_dir }}/requirements_versions.txt"
     executable: "{{ service_dir }}/fooocus_env/bin/pip"
   notify: restart fooocus
@@ -88,11 +88,12 @@
   notify: restart homer
 
 - name: Copy systemd unit file
-  template:
+  ansible.builtin.template:
     src: systemd/{{ service_name }}.service.j2
     dest: /etc/systemd/system/{{ service_name }}.service
-    mode: 0644
+    mode: "0644"
   notify: restart fooocus
 
-- include_role: 
-    name: add_service
+- name: Add Fooocus service
+  ansible.builtin.include_role:
+    name: service

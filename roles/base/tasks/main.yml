@@ -9,12 +9,6 @@
 - name: Include hosts tasks
   ansible.builtin.include_tasks: hosts.yml
 
-- name: Include timezone tasks
-  ansible.builtin.include_tasks: timezone.yml
-
-- name: Include locale tasks
-  ansible.builtin.include_tasks: locale.yml
-
 - name: Include ssh tasks
   ansible.builtin.include_tasks: ssh.yml
 
@@ -25,18 +19,8 @@
   ansible.builtin.include_tasks: ubuntu.yml
   when: ansible_facts['distribution'] == 'Ubuntu'
 
-- name: Include mount tasks
-  ansible.builtin.include_tasks: mount.yml
-  when: mount_media is defined and mount_media
-
-- name: Include thunderbolt tasks
-  ansible.builtin.include_tasks: thunderbolt.yml
-  when: inventory_hostname == "proxmox"
-
 - name: Include zshell tasks
   ansible.builtin.include_tasks: shell.yml
 
 - name: Include config tasks
   ansible.builtin.include_tasks: config.yml
-
-  

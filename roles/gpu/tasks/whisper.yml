@@ -9,22 +9,22 @@
 
 - name: Set service_dir
   ansible.builtin.set_fact:
-    service_dir: "/home/{{ username }}/docker/{{ service_name }}"
+    service_dir: /home/{{ username }}/docker/{{ service_name }}
 
 - name: Clone FastWhisperApi repository
-  become: yes
+  become: true
   become_user: "{{ username }}"
   ansible.builtin.git:
     repo: https://github.com/3choff/FastWhisperAPI.git
     dest: "{{ service_dir }}"
-    update: no
-    force: yes
+    update: false
+    force: true
   notify: restart whisper
 
 - name: Build the Docker image
   community.docker.docker_image:
-    name: "fastwhisperapi"
-    tag: "latest"
+    name: fastwhisperapi
+    tag: latest
     build:
       path: "{{ service_dir }}"
     source: build
@@ -46,8 +46,9 @@
     project_src: "{{ service_dir }}"
     state: present
 
-- include_role: 
-    name: add_service
+- name: Add Whisper service
+  ansible.builtin.include_role:
+    name: service
 
 - name: Insert Nginx configuration block for API
   ansible.builtin.blockinfile:
@@ -57,4 +58,3 @@
     block: "{{ lookup('template', 'templates/nginx/{{ service_name }}.j2') }}"
   delegate_to: webserver
   notify: restart nginx
-

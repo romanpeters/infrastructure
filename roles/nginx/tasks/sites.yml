@@ -1,43 +1,44 @@
 ---
 - name: Create directory
   ansible.builtin.file:
-    path: "/var/www/html/{{ domain }}"
+    path: /var/www/html/{{ domain }}
     state: directory
-    mode: '0755'
+    mode: "0755"
     owner: www-data
     group: www-data
 
 - name: Copy files site
   ansible.builtin.copy:
-    src: "files/var/www/html/{{ domain }}/{{ item }}"
-    dest: "/var/www/html/{{ domain }}/{{ item }}"
+    src: files/var/www/html/{{ domain }}/{{ item }}
+    dest: /var/www/html/{{ domain }}/{{ item }}
     owner: www-data
     group: www-data
     mode: "0644"
   loop:
-    - "403.html"
-    - "404.html"
-    - "styles.css"
+    - 403.html
+    - 404.html
+    - styles.css
 
 - name: Copy default_site
   ansible.builtin.copy:
-    src: "files/etc/nginx/sites-available/{{ item }}"
-    dest: "/etc/nginx/sites-available/{{ item }}"
+    src: files/etc/nginx/sites-available/{{ item }}
+    dest: /etc/nginx/sites-available/{{ item }}
   loop:
     - default_site
     - "{{ domain }}"
 
 - name: Enable default site
   ansible.builtin.file:
-    src: "/etc/nginx/sites-available/{{ item }}"
-    dest: "/etc/nginx/sites-enabled/{{ item }}"
+    src: /etc/nginx/sites-available/{{ item }}
+    dest: /etc/nginx/sites-enabled/{{ item }}
     state: link
   loop:
     - default_site
     - "{{ domain }}"
 
-- include_role:
-    name: add_service
+- name: Add service
+  ansible.builtin.include_role:
+    name: service
   vars:
     service_ip: "{{ item.ip }}"
     service_name: "{{ item.name }}"
