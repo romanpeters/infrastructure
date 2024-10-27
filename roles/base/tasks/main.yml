@@ -24,3 +24,6 @@
 
 - name: Include config tasks
   ansible.builtin.include_tasks: config.yml
+
+- name: Include nowplaying tasks
+  ansible.builtin.include_tasks: nowplaying.yml
