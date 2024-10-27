@@ -5,7 +5,7 @@
 
 - name: Copy nginx.conf files
   ansible.builtin.copy:
-    src: files/etc/nginx/{{ item }}
+    src: etc/nginx/{{ item }}
     dest: /etc/nginx/{{ item }}
   loop:
     - nginx.conf

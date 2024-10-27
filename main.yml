@@ -14,3 +14,10 @@
   roles:
     - role: docker
       tags: docker
+
+- name: Configure webserver
+  hosts: webserver
+  become: true
+  roles:
+    - role: webserver
+      tags: wbeserver

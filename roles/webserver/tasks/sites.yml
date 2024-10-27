@@ -9,7 +9,7 @@
 
 - name: Copy files site
   ansible.builtin.copy:
-    src: files/var/www/html/{{ domain }}/{{ item }}
+    src: var/www/html/{{ domain }}/{{ item }}
     dest: /var/www/html/{{ domain }}/{{ item }}
     owner: www-data
     group: www-data
@@ -21,7 +21,7 @@
 
 - name: Copy default_site
   ansible.builtin.copy:
-    src: files/etc/nginx/sites-available/{{ item }}
+    src: etc/nginx/sites-available/{{ item }}
     dest: /etc/nginx/sites-available/{{ item }}
   loop:
     - default_site
