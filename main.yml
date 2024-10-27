@@ -20,4 +20,4 @@
   become: true
   roles:
     - role: webserver
-      tags: wbeserver
+      tags: webserver
