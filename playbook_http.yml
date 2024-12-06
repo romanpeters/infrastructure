@@ -1,0 +1,10 @@
+---
+- name: Configure Webserver
+  hosts: webserver
+  become: true
+
+  tasks:
+    - name: Run HTTP tasks
+      ansible.builtin.include_role:
+        name: webserver
+        tasks_from: http.yml

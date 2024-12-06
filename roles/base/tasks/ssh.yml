@@ -7,6 +7,20 @@
     group: "{{ username }}"
     mode: "0700"
 
+- name: Check if SSH private key already exists
+  ansible.builtin.stat:
+    path: /home/{{ username }}/.ssh/id_ed25519
+  register: ssh_key_stat
+
+- name: Generate SSH key pair if it does not exist
+  community.crypto.openssh_keypair:
+    path: /home/{{ username }}/.ssh/id_ed25519
+    type: ed25519
+    owner: "{{ username }}"
+    group: "{{ username }}"
+    mode: "0600"
+  when: not ssh_key_stat.stat.exists
+
 - name: Add specific SSH key to authorized_keys
   ansible.builtin.lineinfile:
     path: /home/{{ username }}/.ssh/authorized_keys

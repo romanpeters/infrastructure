@@ -1,0 +1,29 @@
+---
+- name: Clone HTTP Git Repository to /srv/git
+  ansible.builtin.git:
+    repo: git@github.com:romanpeters/infrastructure_http.git
+    dest: /srv/git/infrastructure_http
+    version: main
+
+- name: Fetch remote variable file
+  ansible.builtin.fetch:
+    src: /srv/git/infrastructure_http/index.yml
+    dest: /tmp/index_http.yml
+    flat: true
+
+- name: Load docker compose variables from index.yml
+  ansible.builtin.include_vars:
+    file: /tmp/index_http.yml
+
+- name: Add service
+  ansible.builtin.include_role:
+    name: service
+  vars:
+    service_ip: "{{ item.ip }}"
+    service_name: "{{ item.name }}"
+    service_path: "{{ item.path | default('') }}"
+    service_alias: "{{ item.alias | default([]) }}"
+    service_port: "{{ item.port | default(80) }}"
+    service_remote: "{{ item.remote | default(false) }}"
+    service_ssl: "{{ item.ssl | default(false) }}"
+  loop: "{{ infrastructure_http }}"

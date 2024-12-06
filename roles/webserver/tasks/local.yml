@@ -35,15 +35,3 @@
   loop:
     - default_site
     - "{{ domain }}"
-
-- name: Add service
-  ansible.builtin.include_role:
-    name: service
-  vars:
-    service_ip: "{{ item.ip }}"
-    service_name: "{{ item.name }}"
-    service_alias: "{{ item.alias | default([]) }}"
-    service_port: "{{ item.port | default(80) }}"
-    service_remote: "{{ item.remote | default(false) }}"
-    service_ssl: "{{ item.ssl | default(false) }}"
-  loop: "{{ reverse_proxy }}"
