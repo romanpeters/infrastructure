@@ -4,16 +4,19 @@
     repo: git@github.com:romanpeters/infrastructure_http.git
     dest: /srv/git/infrastructure_http
     version: main
+  delegate_to: localhost
 
 - name: Fetch remote variable file
   ansible.builtin.fetch:
     src: /srv/git/infrastructure_http/index.yml
     dest: /tmp/index_http.yml
     flat: true
+  delegate_to: localhost
 
 - name: Load docker compose variables from index.yml
   ansible.builtin.include_vars:
     file: /tmp/index_http.yml
+  delegate_to: localhost
 
 - name: Add service
   ansible.builtin.include_role:
