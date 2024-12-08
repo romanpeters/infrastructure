@@ -9,5 +9,11 @@
       "automerge": true
     }
   ],
-  "baseBranches": ["dev"]
+  "baseBranches": ["dev"],
+  "schedule": [
+    "before 17:00 on Thursday"
+  ],
+  "prCreation": "single",
+  "prConcurrentLimit": 1
 }
+
