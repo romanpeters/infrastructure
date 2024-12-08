@@ -12,12 +12,6 @@
     dest: /srv/git/infrastructure_docker
     version: main
 
-- name: Delete existing index.yml if it exists
-  ansible.builtin.file:
-    path: /tmp/index.yml
-    state: absent
-  changed_when: false
-
 - name: Fetch remote variable file
   ansible.builtin.fetch:
     src: /srv/git/infrastructure_docker/index.yml
