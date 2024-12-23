@@ -8,5 +8,5 @@
     - name: Run docker compose tasks
       ansible.builtin.include_role:
         name: docker
-        tasks_from: compose.yml
+        tasks_from: compose
       when: docker_services is defined
