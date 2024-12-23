@@ -18,7 +18,7 @@ services:
       - traefik.http.services.myapp.loadbalancer.server.port=3838
 
   tautulli:
-    image: linuxserver/tautulli:2.13.4
+    image: linuxserver/tautulli:2.15.0
     container_name: tautulli
     environment:
       - PUID=1080
