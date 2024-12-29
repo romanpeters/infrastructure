@@ -3,6 +3,10 @@
   hosts: docker
   strategy: "{{ ansible_strategy | default('ansible.builtin.linear') }}"
   become: true
-  roles:
-    - role: docker
-      tags: docker
+
+  tasks:
+    - name: Run docker compose tasks
+      ansible.builtin.include_role:
+        name: docker
+        tasks_from: compose
+      when: docker_services is defined
