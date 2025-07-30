@@ -28,4 +28,9 @@ server {
         proxy_set_header Connection "upgrade";
 {% endif %}
     }
+
+    location @custom_502 {
+        add_header Content-Type text/plain;
+        return 502 "Upstream failed: $upstream_addr\n";
+    }
 }

@@ -1,5 +1,5 @@
 server {
-    listen 443;
+    listen 443 ssl;
     server_name romanpeters.nl www.romanpeters.nl;
 
     ssl_certificate /etc/letsencrypt/live/romanpeters.nl/fullchain.pem;
